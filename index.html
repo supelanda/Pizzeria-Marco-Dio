@@ -813,31 +813,27 @@
     if (!nav.contains(e.target)) nav.classList.remove('nav-open');
   });
 
-  // Ensure anchor-linked reveals are visible on load
-  if (window.location.hash) {
-    const target = document.querySelector(window.location.hash);
-    if (target) {
-      target.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
-    }
+  // ── Hash navigation: force reveals visible immediately ──────────
+  // Prevents sections appearing invisible/empty when arriving from another page.
+  function handleHash() {
+    const hash = window.location.hash;
+    if (!hash) return;
+    const target = document.querySelector(hash);
+    if (!target) return;
+
+    // Force ALL reveals in the target section and those near/above the viewport visible
+    target.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+    document.querySelectorAll('.reveal').forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight * 1.5) el.classList.add('visible');
+    });
+
+    // Scroll with nav offset after a brief layout settle
+    setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
   }
 
-  // Also handle the case where the page was navigated to with a hash
-  // by scrolling after a short delay to clear the nav offset
-  window.addEventListener('load', () => {
-    if (window.location.hash) {
-      const target = document.querySelector(window.location.hash);
-      if (target) {
-        setTimeout(() => {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          // Force all reveal elements in or above target visible
-          document.querySelectorAll('.reveal').forEach(el => {
-            const rect = el.getBoundingClientRect();
-            if (rect.top < window.innerHeight * 1.2) el.classList.add('visible');
-          });
-        }, 80);
-      }
-    }
-  });
+  handleHash();
+  window.addEventListener('load', handleHash);
 
   // Scroll reveal
   const reveals = document.querySelectorAll('.reveal');
