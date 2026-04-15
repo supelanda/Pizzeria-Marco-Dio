@@ -42,10 +42,10 @@
     position:fixed; top:0; left:0; right:0; z-index:100;
     display:flex; align-items:center; justify-content:space-between;
     padding:1.2rem 4rem;
-    background:rgba(16,11,7,.97);
-    backdrop-filter:blur(12px);
-    border-bottom:1px solid var(--border);
+    background: linear-gradient(to bottom, rgba(22,16,10,.97) 0%, rgba(22,16,10,0) 100%);
+    transition: background .4s;
   }
+  nav.scrolled { background: rgba(16,11,7,.97); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
   .nav-logo {
     font-family:'Playfair Display',serif; font-size:1.3rem;
     letter-spacing:.08em; color:var(--gold-lt); text-decoration:none;
@@ -57,13 +57,8 @@
     color:var(--muted); text-decoration:none; transition:color .2s;
   }
   .nav-links a:hover, .nav-links a.active { color:var(--gold-lt); }
-  .nav-back {
-    font-family:'Cormorant Garamond',serif;
-    font-size:.9rem; letter-spacing:.14em; text-transform:uppercase;
-    color:var(--muted); text-decoration:none;
-    transition:color .2s; display:flex; align-items:center; gap:.5rem;
-  }
-  .nav-back:hover { color:var(--gold); }
+  .nav-cta { font-family:'Cormorant Garamond',serif; font-size:.9rem; letter-spacing:.16em; text-transform:uppercase; background:var(--gold); color:var(--ink); border:none; padding:.65rem 1.8rem; cursor:pointer; font-weight:600; text-decoration:none; display:inline-block; transition:background .2s; }
+  .nav-cta:hover { background:var(--gold-lt); }
 
   /* HERO BANNER */
   .page-hero {
@@ -323,12 +318,11 @@
 <body>
 
 <!-- NAV -->
-<nav>
+<nav id="nav">
   <a href="index.html" class="nav-logo">Pizzeria <span>Marco</span></a>
   <ul class="nav-links">
     <li><a href="index.html#about">Storia</a></li>
     <li><a href="pizzeria-marco-menu.html">Menu</a></li>
-    <li><a href="#" class="active">Recensioni</a></li>
     <li><a href="pizzeria-marco-dove-siamo.html">Dove siamo</a></li>
   </ul>
   <a href="index.html" class="nav-cta">Home</a>
@@ -685,8 +679,11 @@
     });
     document.getElementById('filter-count').textContent = visible + ' recensioni';
   }
-  // Hamburger nav
-  const navEl = document.querySelector('nav');
+  // Sticky nav + hamburger
+  const navEl = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    navEl.classList.toggle('scrolled', window.scrollY > 60);
+  });
   document.getElementById('navHamburger').addEventListener('click', function() {
     const open = navEl.classList.toggle('nav-open');
     this.setAttribute('aria-expanded', open);
