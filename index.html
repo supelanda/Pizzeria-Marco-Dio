@@ -1,92 +1,30 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="pizzeria-marco-base.css">
+<link rel="stylesheet" href="pizzeria-marco-responsive.css">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pizzeria Marco — Rovereto</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="pizzeria-marco-responsive.css">
 <style>
-  :root {
-    --ink:       #16100a;
-    --charcoal:  #1e1710;
-    --cream:     #f4e9d4;
-    --warm:      #ede0c4;
-    --gold:      #c9973a;
-    --gold-lt:   #e8c06a;
-    --terra:     #b85c2c;
-    --muted:     #8a7d68;
-    --border:    rgba(201,151,58,.22);
-  }
-
-  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--charcoal);
-    color: var(--cream);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 18px;
-    line-height: 1.65;
-    overflow-x: hidden;
-  }
-
-  /* ─── NOISE OVERLAY ─── */
-  body::before {
-    content:'';
-    position: fixed; inset:0; z-index:0; pointer-events:none;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
-    opacity: .4;
-  }
+/* ─── NOISE OVERLAY ─── */
+  
 
   /* ─── NAV ─── */
-  nav {
-    position: fixed; top:0; left:0; right:0; z-index:100;
-    display: flex; align-items:center; justify-content:space-between;
-    padding: 1.2rem 4rem;
-    background: linear-gradient(to bottom, rgba(22,16,10,.97) 0%, rgba(22,16,10,0) 100%);
-    transition: background .4s;
-  }
-  nav.scrolled { background: rgba(16,11,7,.97); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+  
+  
 
-  .nav-logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.4rem;
-    letter-spacing: .08em;
-    color: var(--gold-lt);
-    text-decoration: none;
-  }
-  .nav-logo span { font-style:italic; color: var(--cream); }
+  
+  
 
-  .nav-links { display:flex; gap:2.4rem; list-style:none; }
-  .nav-links a {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: .95rem;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: var(--warm);
-    text-decoration:none;
-    opacity: .8;
-    transition: opacity .2s, color .2s;
-  }
-  .nav-links a:hover { opacity:1; color:var(--gold-lt); }
+  
+  
+  
 
-  .nav-cta {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: .9rem;
-    letter-spacing: .16em;
-    text-transform: uppercase;
-    background: var(--gold);
-    color: var(--ink);
-    border: none;
-    padding: .65rem 1.8rem;
-    cursor: pointer;
-    transition: background .2s, transform .15s;
-    font-weight: 600;
-  }
-  .nav-cta:hover { background: var(--gold-lt); transform: translateY(-1px); }
+  
+  
 
   /* ─── HERO ─── */
   .hero {
@@ -149,26 +87,11 @@
     opacity:0; animation: fadeUp .8s .95s forwards ease-out;
   }
 
-  .btn-primary {
-    font-family:'Cormorant Garamond', serif;
-    font-size:1rem; letter-spacing:.18em; text-transform:uppercase; font-weight:600;
-    background:var(--gold); color:var(--ink);
-    border:none; padding:.9rem 2.6rem; cursor:pointer;
-    transition: background .2s, transform .15s, box-shadow .2s;
-    text-decoration:none; display:inline-block;
-  }
-  .btn-primary:hover { background:var(--gold-lt); transform:translateY(-2px); box-shadow:0 8px 32px rgba(201,151,58,.3); }
+  
+  
 
-  .btn-outline {
-    font-family:'Cormorant Garamond', serif;
-    font-size:1rem; letter-spacing:.18em; text-transform:uppercase; font-weight:500;
-    background:transparent; color:var(--cream);
-    border: 1px solid rgba(244,233,212,.3);
-    padding:.9rem 2.6rem; cursor:pointer;
-    transition: border-color .2s, color .2s, transform .15s;
-    text-decoration:none; display:inline-block;
-  }
-  .btn-outline:hover { border-color:var(--gold); color:var(--gold); transform:translateY(-2px); }
+  
+  
 
   .hero-badge {
     position:absolute; bottom:3rem; left:50%; transform:translateX(-50%);
@@ -186,28 +109,16 @@
   @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(7px)} }
 
   /* ─── SECTION COMMONS ─── */
-  section { position:relative; z-index:1; }
+  
 
-  .container { max-width: 1160px; margin:0 auto; padding:0 2rem; }
+  
 
-  .section-eyebrow {
-    font-family:'Cormorant Garamond', serif;
-    font-size:.82rem; letter-spacing:.38em; text-transform:uppercase;
-    color:var(--gold); margin-bottom:1.2rem; display:block;
-  }
+  
 
-  .section-title {
-    font-family:'Playfair Display', serif;
-    font-size:clamp(2.4rem,5vw,3.6rem);
-    line-height:1.08; font-weight:700; color:var(--cream);
-    margin-bottom:1.4rem;
-  }
-  .section-title em { font-style:italic; color:var(--gold-lt); }
+  
+  
 
-  .section-body {
-    font-size:1.1rem; color:var(--muted); line-height:1.75;
-    max-width:540px;
-  }
+  .section-
 
   /* ─── ABOUT ─── */
   .about {
@@ -280,14 +191,10 @@
   .feature-tag .icon { color:var(--gold); font-size:1rem; }
 
   /* ─── MENU ─── */
-  .menu-section {
-    padding:9rem 0;
-    background: linear-gradient(to bottom, transparent, rgba(10,7,4,.6), transparent);
-    border-top: 1px solid var(--border);
-  }
+  .menu-
 
   .menu-header { text-align:center; margin-bottom:5rem; }
-  .menu-header .section-body { margin:0 auto; text-align:center; }
+  .menu-header .section-
 
   .menu-tabs {
     display:flex; justify-content:center; gap:0; margin-bottom:3rem;
@@ -346,34 +253,19 @@
   }
 
   /* ─── DOUGHS ─── */
-  .doughs { padding:7rem 0; border-top:1px solid var(--border); }
-  .doughs-inner {
-    display:grid; grid-template-columns:1fr 2fr; gap:5rem; align-items:start;
-  }
-  .doughs-cards { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1px; background:var(--border); border:1px solid var(--border); }
-  .dough-card {
-    background:var(--charcoal);
-    padding:2.4rem 2rem;
-    text-align:center;
-    transition:background .25s;
-  }
-  .dough-card:hover { background:#221a10; }
-  .dough-icon { font-size:2.5rem; margin-bottom:1rem; display:block; }
-  .dough-name {
-    font-family:'Playfair Display', serif;
-    font-size:1.2rem; font-weight:700;
-    color:var(--cream); margin-bottom:.6rem;
-  }
-  .dough-desc { font-size:.9rem; color:var(--muted); line-height:1.5; }
+  
+  
+  
+  
+  
+  
+  
+  
 
   /* ─── REVIEWS ─── */
-  .reviews-section {
-    padding:9rem 0;
-    border-top: 1px solid var(--border);
-    background: linear-gradient(135deg, rgba(184,92,44,.04) 0%, transparent 50%);
-  }
+  .reviews-
   .reviews-header { margin-bottom:4rem; text-align:center; }
-  .reviews-header .section-body { margin:0 auto; text-align:center; }
+  .reviews-header .section-
 
   .reviews-track { overflow:hidden; }
   .reviews-row {
@@ -442,10 +334,7 @@
   .whyus-desc { font-size:.9rem; color:var(--muted); line-height:1.5; }
 
   /* ─── LOCATION ─── */
-  .location-section {
-    padding:9rem 0;
-    border-top:1px solid var(--border);
-  }
+  .location-
   .location-grid {
     display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:start;
   }
@@ -507,54 +396,31 @@
   .hours-row.today .day { color:var(--gold); }
 
   /* ─── FOOTER ─── */
-  footer {
-    border-top:1px solid var(--border);
-    padding:4rem 0 2.5rem;
-    text-align:center;
-  }
-  .footer-logo {
-    font-family:'Playfair Display', serif;
-    font-size:2.2rem; font-weight:900;
-    color:var(--cream); letter-spacing:-.02em;
-    margin-bottom:.5rem;
-  }
-  .footer-logo em { font-style:italic; color:var(--gold-lt); }
-  .footer-tagline {
-    font-size:.9rem; color:var(--muted); font-style:italic;
-    margin-bottom:2rem;
-  }
-  .footer-links {
-    display:flex; gap:2rem; justify-content:center; flex-wrap:wrap;
-    list-style:none; margin-bottom:2.5rem;
-  }
-  .footer-links a {
-    font-size:.8rem; letter-spacing:.18em; text-transform:uppercase;
-    color:var(--muted); text-decoration:none;
-    transition:color .2s;
-  }
-  .footer-links a:hover { color:var(--gold); }
-  .footer-copy { font-size:.8rem; color:var(--muted); opacity:.6; }
+  
+  
+  
+  
+  
+  
+  
+  
 
   /* ─── ANIMATIONS ─── */
-  @keyframes fadeUp {
-    from { opacity:0; transform:translateY(24px); }
+  
     to   { opacity:1; transform:translateY(0); }
   }
 
-  .reveal {
-    opacity:0; transform:translateY(28px);
-    transition:opacity .7s ease, transform .7s ease;
-  }
-  .reveal.visible { opacity:1; transform:translateY(0); }
+  
+  
 
   /* ─── RESPONSIVE ─── */
   @media(max-width:900px){
-    nav { padding:1rem 1.5rem; }
-    .nav-links { display:none; }
-    .about-grid, .location-grid, .doughs-inner { grid-template-columns:1fr; gap:3rem; }
+    
+    
+    .about-grid, .location-grid, 
     .menu-grid { grid-template-columns:1fr 1fr; }
     .whyus-grid { grid-template-columns:1fr 1fr; }
-    .doughs-cards { grid-template-columns:1fr; }
+    
     .about-badge-float { width:80px; height:80px; }
     .about-badge-float .big-num { font-size:1.4rem; }
     .about-features { grid-template-columns:1fr; }
@@ -861,4 +727,5 @@
   });
 </script>
 </body>
+</html>
 </html>
