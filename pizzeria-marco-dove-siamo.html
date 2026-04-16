@@ -1,91 +1,32 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="pizzeria-marco-base.css">
+<link rel="stylesheet" href="pizzeria-marco-responsive.css">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dove Siamo — Pizzeria Marco, Rovereto</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="pizzeria-marco-responsive.css">
 <style>
-  :root {
-    --ink:      #16100a;
-    --charcoal: #1e1710;
-    --deep:     #130e08;
-    --cream:    #f4e9d4;
-    --warm:     #ede0c4;
-    --gold:     #c9973a;
-    --gold-lt:  #e8c06a;
-    --gold-dim: rgba(201,151,58,.18);
-    --terra:    #b85c2c;
-    --muted:    #8a7d68;
-    --border:   rgba(201,151,58,.22);
-  }
-
-  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-  html { scroll-behavior:smooth; }
-
-  body {
-    background: var(--charcoal);
-    color: var(--cream);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 18px;
-    line-height: 1.65;
-    overflow-x: hidden;
-  }
-  body::before {
-    content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
-    opacity:.4;
-  }
-
-  /* NAV */
-  nav {
-    position:fixed; top:0; left:0; right:0; z-index:100;
-    display:flex; align-items:center; justify-content:space-between;
-    padding:1.2rem 4rem;
-    background: linear-gradient(to bottom, rgba(22,16,10,.97) 0%, rgba(22,16,10,0) 100%);
-    transition: background .4s;
-  }
-  nav.scrolled { background: rgba(16,11,7,.97); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
-  .nav-logo {
-    font-family:'Playfair Display',serif; font-size:1.3rem;
-    letter-spacing:.08em; color:var(--gold-lt); text-decoration:none;
-  }
-  .nav-logo span { font-style:italic; color:var(--cream); }
-  .nav-links { display:flex; gap:2rem; list-style:none; }
-  .nav-links a {
-    font-size:.88rem; letter-spacing:.14em; text-transform:uppercase;
-    color:var(--muted); text-decoration:none; transition:color .2s;
-  }
-  .nav-links a:hover, .nav-links a.active { color:var(--gold-lt); }
-  .nav-cta { font-family:'Cormorant Garamond',serif; font-size:.9rem; letter-spacing:.16em; text-transform:uppercase; background:var(--gold); color:var(--ink); border:none; padding:.65rem 1.8rem; cursor:pointer; font-weight:600; text-decoration:none; display:inline-block; transition:background .2s; }
-  .nav-cta:hover { background:var(--gold-lt); }
+/* NAV */
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
   /* PAGE HERO */
-  .page-hero {
-    position:relative; z-index:1;
-    padding:11rem 4rem 5rem;
-    border-bottom:1px solid var(--border);
-    overflow:hidden;
-  }
+  
   .page-hero-inner { max-width:580px; }
-  .eyebrow {
-    font-size:.82rem; letter-spacing:.38em; text-transform:uppercase;
-    color:var(--gold); margin-bottom:1.2rem; display:block;
-    opacity:0; animation:fadeUp .7s .1s forwards;
-  }
-  .page-title {
-    font-family:'Playfair Display',serif;
-    font-size:clamp(3rem,7vw,5.5rem);
-    font-weight:900; line-height:.95; color:var(--cream);
-    opacity:0; animation:fadeUp .8s .25s forwards;
-  }
-  .page-title em { display:block; font-style:italic; color:var(--gold-lt); }
-  .page-sub {
-    margin-top:1.6rem; font-size:1.1rem; color:var(--muted); max-width:420px;
-    opacity:0; animation:fadeUp .8s .4s forwards;
-  }
+  
+  
+  
+  
   /* Decorative compass in hero */
   .hero-compass {
     position:absolute; right:6rem; top:50%; transform:translateY(-50%);
@@ -223,24 +164,10 @@
 
   /* CTA buttons */
   .cta-row { display:flex; gap:1rem; flex-wrap:wrap; padding-top:1rem; }
-  .btn-primary {
-    font-family:'Cormorant Garamond',serif;
-    font-size:.95rem; letter-spacing:.18em; text-transform:uppercase; font-weight:600;
-    background:var(--gold); color:var(--ink);
-    border:none; padding:.85rem 2.2rem; cursor:pointer;
-    text-decoration:none; display:inline-block;
-    transition:background .2s, transform .15s, box-shadow .2s;
-  }
-  .btn-primary:hover { background:var(--gold-lt); transform:translateY(-2px); box-shadow:0 8px 28px rgba(201,151,58,.3); }
-  .btn-outline {
-    font-family:'Cormorant Garamond',serif;
-    font-size:.95rem; letter-spacing:.18em; text-transform:uppercase;
-    background:transparent; color:var(--cream);
-    border:1px solid rgba(244,233,212,.25); padding:.85rem 2.2rem;
-    text-decoration:none; display:inline-block;
-    transition:border-color .2s, color .2s;
-  }
-  .btn-outline:hover { border-color:var(--gold); color:var(--gold); }
+  
+  
+  
+  
 
   /* ── NEIGHBOURHOOD ── */
   .neighbourhood {
@@ -276,29 +203,21 @@
   }
 
   /* FOOTER */
-  footer {
-    position:relative; z-index:1;
-    border-top:1px solid var(--border);
-    padding:3rem 0 2rem; text-align:center;
-  }
-  .footer-logo {
-    font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:900;
-    color:var(--cream); margin-bottom:.4rem;
-  }
-  .footer-logo em { font-style:italic; color:var(--gold-lt); }
-  .footer-copy { font-size:.8rem; color:var(--muted); opacity:.55; margin-top:.8rem; }
+  
+  
+  
+  
 
-  @keyframes fadeUp {
-    from { opacity:0; transform:translateY(20px); }
+  
     to   { opacity:1; transform:translateY(0); }
   }
-  .reveal { opacity:0; transform:translateY(24px); transition: opacity .7s ease, transform .7s ease; }
-  .reveal.visible { opacity:1; transform:translateY(0); }
+  
+  
 
   @media(max-width:900px){
-    nav { padding:1rem 1.5rem; }
-    .nav-links { display:none; }
-    .page-hero { padding:9rem 1.5rem 3.5rem; }
+    
+    
+    
     .hero-compass { display:none; }
     .main-wrap { grid-template-columns:1fr; }
     .map-panel { border-right:none; border-bottom:1px solid var(--border); }
@@ -308,132 +227,6 @@
     .poi-grid { grid-template-columns:1fr 1fr; }
     .services-grid { grid-template-columns:1fr; }
   }
-
-  /* ─── PRENOTAZIONE MODAL ─── */
-  .modal-overlay {
-    position:fixed; inset:0; z-index:1000;
-    background:rgba(10,7,4,.82);
-    backdrop-filter:blur(6px);
-    display:flex; align-items:center; justify-content:center;
-    padding:1.2rem;
-    opacity:0; visibility:hidden;
-    transition:opacity .28s ease, visibility .28s ease;
-  }
-  .modal-overlay.open { opacity:1; visibility:visible; }
-
-  .modal-box {
-    position:relative;
-    background:var(--charcoal);
-    border:1px solid var(--border);
-    width:100%; max-width:540px;
-    max-height:92vh;
-    overflow-y:auto;
-    padding:2.8rem 3rem 2.4rem;
-    transform:translateY(18px);
-    transition:transform .3s ease;
-    box-shadow:0 32px 80px rgba(0,0,0,.55);
-  }
-  .modal-overlay.open .modal-box { transform:translateY(0); }
-
-  .modal-close {
-    position:absolute; top:1.1rem; right:1.2rem;
-    background:none; border:none; cursor:pointer;
-    color:var(--muted); font-size:1.4rem; line-height:1;
-    transition:color .2s;
-    padding:.3rem .5rem;
-  }
-  .modal-close:hover { color:var(--cream); }
-
-  .modal-title {
-    font-family:'Playfair Display',serif;
-    font-size:1.9rem; font-weight:700; color:var(--cream);
-    margin-bottom:.4rem; line-height:1.1;
-  }
-  .modal-title em { font-style:italic; color:var(--gold-lt); }
-  .modal-sub { font-size:.9rem; color:var(--muted); margin-bottom:2rem; font-style:italic; }
-
-  .form-group { margin-bottom:1.3rem; }
-  .form-group label {
-    display:block;
-    font-size:.72rem; letter-spacing:.22em; text-transform:uppercase;
-    color:var(--gold); margin-bottom:.5rem;
-  }
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    width:100%;
-    font-family:'Cormorant Garamond',serif;
-    font-size:1rem;
-    background:rgba(26,18,9,.85);
-    border:1px solid var(--border);
-    color:var(--cream);
-    padding:.75rem 1rem;
-    outline:none;
-    transition:border-color .2s, background .2s;
-    appearance:none; -webkit-appearance:none;
-  }
-  .form-group input:focus,
-  .form-group select:focus,
-  .form-group textarea:focus {
-    border-color:rgba(201,151,58,.6);
-    background:rgba(30,22,12,.9);
-  }
-  .form-group input::placeholder,
-  .form-group textarea::placeholder { color:var(--muted); font-style:italic; }
-  .form-group select { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M0 0l6 8 6-8z' fill='%238a7d68'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 1rem center; padding-right:2.5rem; }
-  .form-group textarea { resize:vertical; min-height:90px; }
-  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
-
-  .form-error-inline {
-    margin-top:.4rem;
-    font-size:.82rem; color:#e07060; font-style:italic;
-  }
-  .form-submit-error {
-    background:rgba(180,60,50,.15); border:1px solid rgba(200,70,60,.35);
-    color:#e08878; padding:.8rem 1rem; font-size:.9rem; font-style:italic;
-    margin-bottom:1rem; display:none;
-  }
-  .form-submit-error.show { display:block; }
-
-  .modal-submit {
-    width:100%; margin-top:.6rem;
-    font-family:'Cormorant Garamond',serif;
-    font-size:1rem; letter-spacing:.2em; text-transform:uppercase; font-weight:600;
-    background:var(--gold); color:var(--ink);
-    border:none; padding:1rem; cursor:pointer;
-    transition:background .2s, transform .15s;
-  }
-  .modal-submit:hover:not(:disabled) { background:var(--gold-lt); transform:translateY(-1px); }
-  .modal-submit:disabled { opacity:.55; cursor:not-allowed; }
-  .modal-submit .spinner {
-    display:none; width:16px; height:16px;
-    border:2px solid rgba(22,16,10,.3); border-top-color:var(--ink);
-    border-radius:50%; animation:spin .6s linear infinite;
-    vertical-align:middle; margin-right:.5rem;
-  }
-  .modal-submit.loading .spinner { display:inline-block; }
-  @keyframes spin { to { transform:rotate(360deg); } }
-
-  /* ─── TOAST ─── */
-  .toast {
-    position:fixed; bottom:2rem; right:2rem; z-index:2000;
-    background:#2a4a2e; border:1px solid #4a7a50;
-    color:#8fd898; padding:1rem 1.5rem;
-    font-family:'Cormorant Garamond',serif; font-size:1rem; font-style:italic;
-    max-width:340px;
-    box-shadow:0 8px 32px rgba(0,0,0,.4);
-    transform:translateY(12px); opacity:0;
-    transition:opacity .3s ease, transform .3s ease;
-    pointer-events:none;
-  }
-  .toast.show { opacity:1; transform:translateY(0); }
-
-  @media(max-width:600px){
-    .modal-box { padding:2rem 1.5rem 1.8rem; }
-    .form-row  { grid-template-columns:1fr; gap:.8rem; }
-    .toast     { bottom:1rem; right:1rem; left:1rem; max-width:none; }
-  }
-
 </style>
 </head>
 <body>
@@ -573,7 +366,6 @@
     <div class="cta-row">
       <a href="https://maps.google.com/?q=Pizzeria+Marco+Rovereto" target="_blank" class="btn-primary">Indicazioni stradali</a>
       <a href="pizzeria-marco-menu.html" class="btn-outline">Vedi il menu</a>
-      <button class="btn-primary" id="btnOpenModal" style="border:none;cursor:pointer;">Prenota un tavolo</button>
     </div>
 
   </div>
@@ -658,246 +450,5 @@
     if (!navEl.contains(e.target)) navEl.classList.remove('nav-open');
   });
 </script>
-<script type="module">
-// ─── SUPABASE CONFIG ─────────────────────────────────────────
-// ← inserisci qui i tuoi dati Supabase
-const SUPABASE_URL      = 'https://YOUR_PROJECT.supabase.co';   // ← il tuo Project URL
-const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY';                      // ← la tua anon/public key
-
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-// ─── HELPERS ─────────────────────────────────────────────────
-const $ = id => document.getElementById(id);
-const overlay  = $('modalOverlay');
-const modalBox = $('modalBox');
-const form     = $('prenotazioneForm');
-
-function openModal() {
-  overlay.classList.add('open');
-  document.body.style.overflow = 'hidden';
-  // Set min date to tomorrow (today bookings handled separately)
-  const today = new Date();
-  const yyyy  = today.getFullYear();
-  const mm    = String(today.getMonth()+1).padStart(2,'0');
-  const dd    = String(today.getDate()).padStart(2,'0');
-  $('pData').min = `${yyyy}-${mm}-${dd}`;
-  setTimeout(() => $('pNome').focus(), 120);
-}
-
-function closeModal() {
-  overlay.classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-// ─── OPEN / CLOSE ─────────────────────────────────────────────
-$('btnOpenModal').addEventListener('click', openModal);
-$('modalClose').addEventListener('click', closeModal);
-overlay.addEventListener('click', e => { if(e.target === overlay) closeModal(); });
-document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
-
-// ─── LUNEDÌ ESCLUSO ──────────────────────────────────────────
-$('pData').addEventListener('change', function() {
-  const errEl = $('errData');
-  if (!this.value) return;
-  const d = new Date(this.value + 'T12:00:00');
-  if (d.getDay() === 1) {  // 1 = lunedì
-    this.value = '';
-    errEl.textContent = 'Siamo chiusi il lunedì — scegli un altro giorno.';
-  } else {
-    errEl.textContent = '';
-    filterOreByDate(this.value);
-  }
-});
-
-// ─── FILTRO ORE SE DATA = OGGI ────────────────────────────────
-function filterOreByDate(dateStr) {
-  const select = $('pOra');
-  const opts   = select.querySelectorAll('option');
-  const now    = new Date();
-  const sel    = new Date(dateStr + 'T00:00:00');
-  const isToday = sel.toDateString() === now.toDateString();
-  const nowMins = now.getHours() * 60 + now.getMinutes() + 45; // buffer 45 min
-
-  opts.forEach(opt => {
-    if (!opt.value) return;
-    if (isToday) {
-      const [hh, mm] = opt.value.split(':').map(Number);
-      const slotMins = hh * 60 + mm;
-      opt.disabled = slotMins < nowMins;
-      opt.style.display = slotMins < nowMins ? 'none' : '';
-    } else {
-      opt.disabled = false;
-      opt.style.display = '';
-    }
-  });
-  // Reset selection if current is now disabled
-  if (select.value && select.querySelector(`option[value="${select.value}"]`)?.disabled) {
-    select.value = '';
-  }
-}
-
-// ─── VALIDAZIONE ─────────────────────────────────────────────
-function validate() {
-  let ok = true;
-  const fields = [
-    { id:'pNome',     err:'errNome',     msg:'Inserisci nome e cognome.' },
-    { id:'pTelefono', err:'errTelefono', msg:'Inserisci un numero di telefono valido.' },
-    { id:'pData',     err:'errData',     msg:'Seleziona una data.' },
-    { id:'pOra',      err:'errOra',      msg:'Seleziona un orario.' },
-    { id:'pPersone',  err:'errPersone',  msg:'Seleziona il numero di persone.' },
-  ];
-  fields.forEach(({ id, err, msg }) => {
-    const el = $(id), errEl = $(err);
-    if (!el.value.trim()) {
-      errEl.textContent = msg; ok = false;
-    } else {
-      errEl.textContent = '';
-    }
-  });
-  // extra: lunedì check
-  if ($('pData').value) {
-    const d = new Date($('pData').value + 'T12:00:00');
-    if (d.getDay() === 1) {
-      $('errData').textContent = 'Siamo chiusi il lunedì — scegli un altro giorno.';
-      $('pData').value = ''; ok = false;
-    }
-  }
-  return ok;
-}
-
-// ─── SUBMIT ──────────────────────────────────────────────────
-form.addEventListener('submit', async e => {
-  e.preventDefault();
-  $('submitError').classList.remove('show');
-  if (!validate()) return;
-
-  const btn = $('modalSubmit');
-  btn.disabled = true;
-  btn.classList.add('loading');
-
-  const payload = {
-    nome:     $('pNome').value.trim(),
-    telefono: $('pTelefono').value.trim(),
-    data:     $('pData').value,
-    ora:      $('pOra').value,
-    persone:  parseInt($('pPersone').value),
-    note:     $('pNote').value.trim() || null,
-    stato:    'in_attesa',
-  };
-
-  const { error } = await supabase.from('prenotazioni').insert([payload]);
-
-  btn.disabled = false;
-  btn.classList.remove('loading');
-
-  if (error) {
-    const errEl = $('submitError');
-    errEl.textContent = 'Si è verificato un errore. Riprova o chiamaci direttamente.';
-    errEl.classList.add('show');
-    return;
-  }
-
-  // Successo
-  form.reset();
-  closeModal();
-  showToast('✓ Prenotazione ricevuta! Ti confermiamo al più presto.');
-});
-
-// ─── TOAST ───────────────────────────────────────────────────
-function showToast(msg) {
-  const t = $('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 4000);
-}
-</script>
-
-
-<!-- PRENOTAZIONE MODAL -->
-<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-  <div class="modal-box" id="modalBox">
-    <button class="modal-close" id="modalClose" aria-label="Chiudi">✕</button>
-    <h2 class="modal-title" id="modalTitle">Prenota <em>un tavolo</em></h2>
-    <p class="modal-sub">Compila il form — ti confermiamo appena possibile.</p>
-
-    <div class="form-submit-error" id="submitError"></div>
-
-    <form id="prenotazioneForm" novalidate>
-      <div class="form-group">
-        <label for="pNome">Nome e cognome *</label>
-        <input type="text" id="pNome" name="nome" required autocomplete="name" placeholder="Mario Rossi">
-        <div class="form-error-inline" id="errNome"></div>
-      </div>
-
-      <div class="form-group">
-        <label for="pTelefono">Telefono *</label>
-        <input type="tel" id="pTelefono" name="telefono" required autocomplete="tel" placeholder="+39 340 000 0000">
-        <div class="form-error-inline" id="errTelefono"></div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label for="pData">Data *</label>
-          <input type="date" id="pData" name="data" required>
-          <div class="form-error-inline" id="errData"></div>
-        </div>
-        <div class="form-group">
-          <label for="pOra">Ora *</label>
-          <select id="pOra" name="ora" required>
-            <option value="">— scegli —</option>
-            <option value="11:30">11:30</option>
-            <option value="12:00">12:00</option>
-            <option value="12:30">12:30</option>
-            <option value="13:00">13:00</option>
-            <option value="13:30">13:30</option>
-            <option value="18:00">18:00</option>
-            <option value="18:30">18:30</option>
-            <option value="19:00">19:00</option>
-            <option value="19:30">19:30</option>
-            <option value="20:00">20:00</option>
-            <option value="20:30">20:30</option>
-            <option value="21:00">21:00</option>
-            <option value="21:30">21:30</option>
-          </select>
-          <div class="form-error-inline" id="errOra"></div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="pPersone">Numero di persone *</label>
-        <select id="pPersone" name="persone" required>
-          <option value="">— scegli —</option>
-          <option value="1">1 persona</option>
-          <option value="2">2 persone</option>
-          <option value="3">3 persone</option>
-          <option value="4">4 persone</option>
-          <option value="5">5 persone</option>
-          <option value="6">6 persone</option>
-          <option value="7">7 persone</option>
-          <option value="8">8 persone</option>
-          <option value="9">9 persone</option>
-          <option value="10">10 persone</option>
-          <option value="11">11 persone</option>
-          <option value="12">12 persone</option>
-        </select>
-        <div class="form-error-inline" id="errPersone"></div>
-      </div>
-
-      <div class="form-group">
-        <label for="pNote">Note (opzionale)</label>
-        <textarea id="pNote" name="note" placeholder="Allergie, occasioni speciali, richieste particolari…"></textarea>
-      </div>
-
-      <button type="submit" class="modal-submit" id="modalSubmit">
-        <span class="spinner"></span>Invia prenotazione
-      </button>
-    </form>
-  </div>
-</div>
-
-<!-- TOAST -->
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-
 </body>
 </html>
