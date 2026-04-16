@@ -164,6 +164,110 @@
 
   /* CTA buttons */
   .cta-row { display:flex; gap:1rem; flex-wrap:wrap; padding-top:1rem; }
+
+  /* ── BOOKING MODAL ── */
+  .modal-overlay {
+    position:fixed; inset:0; z-index:500;
+    background:rgba(10,7,4,.88); backdrop-filter:blur(6px);
+    display:flex; align-items:center; justify-content:center;
+    padding:1.2rem;
+    opacity:0; pointer-events:none;
+    transition:opacity .3s ease;
+  }
+  .modal-overlay.open { opacity:1; pointer-events:all; }
+
+  .modal-box {
+    width:100%; max-width:520px;
+    background:var(--charcoal);
+    border:1px solid var(--border);
+    padding:2.8rem 2.6rem 2.4rem;
+    position:relative;
+    transform:translateY(16px);
+    transition:transform .3s ease;
+    max-height:90vh; overflow-y:auto;
+  }
+  .modal-overlay.open .modal-box { transform:translateY(0); }
+
+  .modal-close {
+    position:absolute; top:1rem; right:1.2rem;
+    background:none; border:none; color:var(--muted);
+    font-size:1.4rem; cursor:pointer; line-height:1;
+    transition:color .2s;
+  }
+  .modal-close:hover { color:var(--cream); }
+
+  .modal-eyebrow {
+    font-size:.72rem; letter-spacing:.35em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:.6rem; display:block;
+  }
+  .modal-title {
+    font-family:'Playfair Display',serif;
+    font-size:1.9rem; font-weight:700; color:var(--cream);
+    line-height:1.1; margin-bottom:1.8rem;
+  }
+  .modal-title em { font-style:italic; color:var(--gold-lt); }
+
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  .form-group { margin-bottom:1.1rem; }
+  .form-group label {
+    display:block; font-size:.7rem; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:.4rem;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width:100%; font-family:'Cormorant Garamond',serif; font-size:1rem;
+    background:rgba(26,18,9,.9); border:1px solid var(--border);
+    color:var(--cream); padding:.7rem .9rem; outline:none;
+    transition:border-color .2s; appearance:none;
+  }
+  .form-group select {
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238a7d68'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right .8rem center; padding-right:2rem;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color:rgba(201,151,58,.6); }
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color:var(--muted); font-style:italic; }
+  .form-group textarea { resize:vertical; min-height:80px; }
+
+  .form-submit {
+    width:100%; margin-top:.6rem;
+    font-family:'Cormorant Garamond',serif;
+    font-size:1rem; letter-spacing:.2em; text-transform:uppercase; font-weight:600;
+    background:var(--gold); color:var(--ink);
+    border:none; padding:.95rem; cursor:pointer;
+    transition:background .2s, opacity .2s;
+  }
+  .form-submit:hover:not(:disabled) { background:var(--gold-lt); }
+  .form-submit:disabled { opacity:.55; cursor:not-allowed; }
+
+  .form-error {
+    margin-top:.8rem; padding:.65rem .9rem;
+    background:rgba(140,46,34,.18); border:1px solid rgba(200,80,60,.3);
+    color:#e08080; font-size:.9rem; font-style:italic;
+    display:none;
+  }
+  .form-error.show { display:block; }
+
+  /* Toast notification */
+  .toast-booking {
+    position:fixed; bottom:1.6rem; right:1.6rem; z-index:9999;
+    padding:1rem 1.5rem; max-width:340px;
+    background:#1e3028; border:1px solid #3a6040; color:#8fd898;
+    font-family:'Cormorant Garamond',serif; font-size:1rem; font-style:italic;
+    box-shadow:0 8px 32px rgba(0,0,0,.5);
+    transform:translateY(12px); opacity:0;
+    transition:opacity .35s ease, transform .35s ease;
+    pointer-events:none;
+  }
+  .toast-booking.show { opacity:1; transform:translateY(0); }
+
+  @media(max-width:600px){
+    .modal-box { padding:2rem 1.4rem 1.8rem; }
+    .form-row { grid-template-columns:1fr; }
+  }
   
   
   
@@ -364,7 +468,8 @@
     </div>
 
     <div class="cta-row">
-      <a href="https://maps.google.com/?q=Pizzeria+Marco+Rovereto" target="_blank" class="btn-primary">Indicazioni stradali</a>
+      <button class="btn-primary" id="openBooking">Prenota un tavolo</button>
+      <a href="https://maps.google.com/?q=Pizzeria+Marco+Rovereto" target="_blank" class="btn-outline">Indicazioni stradali</a>
       <a href="pizzeria-marco-menu.html" class="btn-outline">Vedi il menu</a>
     </div>
 
@@ -410,21 +515,204 @@
   <div class="footer-copy">© 2025 Pizzeria Marco · Vicolo Paganini, Rovereto (TN) · Tutti i diritti riservati</div>
 </footer>
 
+<!-- BOOKING MODAL -->
+<div class="modal-overlay" id="bookingModal" role="dialog" aria-modal="true" aria-label="Prenota un tavolo">
+  <div class="modal-box">
+    <button class="modal-close" id="closeBooking" aria-label="Chiudi">✕</button>
+    <span class="modal-eyebrow">Pizzeria Marco · Rovereto</span>
+    <h2 class="modal-title">Prenota<em>il tuo tavolo</em></h2>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="b-nome">Nome e cognome *</label>
+        <input type="text" id="b-nome" placeholder="Mario Rossi" required>
+      </div>
+      <div class="form-group">
+        <label for="b-tel">Telefono *</label>
+        <input type="tel" id="b-tel" placeholder="333 123 4567" required>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="b-data">Data *</label>
+        <input type="date" id="b-data" required>
+      </div>
+      <div class="form-group">
+        <label for="b-ora">Orario *</label>
+        <select id="b-ora" required>
+          <option value="">— scegli —</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="b-persone">Numero di persone *</label>
+      <select id="b-persone" required>
+        <option value="">— scegli —</option>
+        <option>1</option><option>2</option><option>3</option>
+        <option>4</option><option>5</option><option>6</option>
+        <option>7</option><option>8</option><option>9</option>
+        <option>10</option><option>11</option><option>12</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="b-note">Note (opzionale)</label>
+      <textarea id="b-note" placeholder="Allergie, occasioni speciali, richieste particolari…"></textarea>
+    </div>
+
+    <div class="form-error" id="bookingError"></div>
+    <button class="form-submit" id="bookingSubmit">Invia prenotazione</button>
+  </div>
+</div>
+
+<!-- Toast conferma -->
+<div class="toast-booking" id="bookingToast">
+  ✓ Prenotazione ricevuta! Ti confermiamo al più presto.
+</div>
+
+<script type="module">
+  // ─────────────────────────────────────────────────────────────
+  //  ⚠️  INSERISCI QUI LE TUE CREDENZIALI SUPABASE
+  //      Vai su supabase.com → tuo progetto → Settings → API
+  // ─────────────────────────────────────────────────────────────
+  const SUPABASE_URL      = 'https://YOUR_PROJECT_REF.supabase.co'; // ← sostituisci
+  const SUPABASE_ANON_KEY = 'YOUR_ANON_PUBLIC_KEY';                  // ← sostituisci
+  // ─────────────────────────────────────────────────────────────
+
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+  const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // ── Orari disponibili ──────────────────────────────────────
+  const ALL_SLOTS = ['11:30','12:00','12:30','13:00','13:30',
+                     '18:00','18:30','19:00','19:30','20:00','20:30','21:00','21:30'];
+
+  function populateSlots(dateVal) {
+    const sel = document.getElementById('b-ora');
+    sel.innerHTML = '<option value="">— scegli —</option>';
+    const today = new Date().toISOString().split('T')[0];
+    const now   = new Date();
+    ALL_SLOTS.forEach(slot => {
+      if (dateVal === today) {
+        const [h,m] = slot.split(':').map(Number);
+        const slotDate = new Date(); slotDate.setHours(h,m,0,0);
+        if (slotDate <= now) return; // slot già passato
+      }
+      const opt = document.createElement('option');
+      opt.value = opt.textContent = slot;
+      sel.appendChild(opt);
+    });
+  }
+
+  // ── Data minima = domani (no domenica = giorno 0 = ok, lunedì già aperto) ──
+  function setMinDate() {
+    const inp = document.getElementById('b-data');
+    const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
+    inp.min = tomorrow.toISOString().split('T')[0];
+  }
+
+  document.getElementById('b-data').addEventListener('change', e => {
+    populateSlots(e.target.value);
+  });
+
+  // ── Apri / chiudi modale ───────────────────────────────────
+  const overlay = document.getElementById('bookingModal');
+
+  document.getElementById('openBooking').addEventListener('click', () => {
+    setMinDate();
+    populateSlots('');
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+
+  function closeModal() {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('closeBooking').addEventListener('click', closeModal);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  // ── Submit ─────────────────────────────────────────────────
+  document.getElementById('bookingSubmit').addEventListener('click', async () => {
+    const nome    = document.getElementById('b-nome').value.trim();
+    const tel     = document.getElementById('b-tel').value.trim();
+    const data    = document.getElementById('b-data').value;
+    const ora     = document.getElementById('b-ora').value;
+    const persone = document.getElementById('b-persone').value;
+    const note    = document.getElementById('b-note').value.trim();
+    const errEl   = document.getElementById('bookingError');
+    const btn     = document.getElementById('bookingSubmit');
+
+    errEl.classList.remove('show');
+
+    if (!nome || !tel || !data || !ora || !persone) {
+      errEl.textContent = 'Compila tutti i campi obbligatori.';
+      errEl.classList.add('show');
+      return;
+    }
+
+    // Blocca domenica (getDay() === 0) — il ristorante è chiuso a pranzo di domenica
+    // ma aperto a cena, quindi non blocchiamo. Nessun giorno di chiusura totale.
+
+    btn.disabled = true;
+    btn.textContent = 'Invio in corso…';
+
+    // ⚠️ Se SUPABASE_URL non è ancora configurato, mostra istruzione chiara
+    if (SUPABASE_URL.includes('YOUR_PROJECT')) {
+      errEl.textContent = 'Supabase non configurato. Sostituisci SUPABASE_URL e SUPABASE_ANON_KEY nello script.';
+      errEl.classList.add('show');
+      btn.disabled = false;
+      btn.textContent = 'Invia prenotazione';
+      return;
+    }
+
+    const { error } = await sb.from('prenotazioni').insert({
+      nome, telefono: tel, data, ora,
+      persone: parseInt(persone),
+      note: note || null,
+      stato: 'in_attesa'
+    });
+
+    btn.disabled = false;
+    btn.textContent = 'Invia prenotazione';
+
+    if (error) {
+      errEl.textContent = 'Errore durante l\'invio. Riprova o chiamaci direttamente.';
+      errEl.classList.add('show');
+      console.error('Supabase error:', error);
+      return;
+    }
+
+    // Successo
+    closeModal();
+    document.getElementById('b-nome').value = '';
+    document.getElementById('b-tel').value  = '';
+    document.getElementById('b-data').value = '';
+    document.getElementById('b-persone').value = '';
+    document.getElementById('b-note').value = '';
+
+    const toast = document.getElementById('bookingToast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 4500);
+  });
+</script>
+
 <script>
-  // "Oggi" highlight based on actual day
+  // "Oggi" highlight
   const days = document.querySelectorAll('.hours-row');
-  const todayIdx = new Date().getDay(); // 0=Sun, 1=Mon...
+  const todayIdx = new Date().getDay();
   const map = {1:0, 2:1, 3:2, 4:3, 5:4, 6:5, 0:6};
-  days.forEach((row,i) => row.classList.remove('today'));
-  if(days[map[todayIdx]]) {
+  days.forEach(row => row.classList.remove('today'));
+  if (days[map[todayIdx]]) {
     const targetRow = days[map[todayIdx]];
     targetRow.classList.add('today');
-    const badge = targetRow.querySelector('.today-badge');
-    if(!badge){
-      const dayCell = targetRow.querySelector('.day');
+    if (!targetRow.querySelector('.today-badge')) {
       const b = document.createElement('span');
       b.className = 'today-badge'; b.textContent = 'oggi';
-      dayCell.appendChild(b);
+      targetRow.querySelector('.day').appendChild(b);
     }
   }
 
@@ -432,16 +720,14 @@
   const reveals = document.querySelectorAll('.reveal');
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => {
-      if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
     });
   }, { threshold:.1 });
   reveals.forEach(el => obs.observe(el));
 
   // Sticky nav + hamburger
   const navEl = document.getElementById('nav');
-  window.addEventListener('scroll', () => {
-    navEl.classList.toggle('scrolled', window.scrollY > 60);
-  });
+  window.addEventListener('scroll', () => navEl.classList.toggle('scrolled', window.scrollY > 60));
   document.getElementById('navHamburger').addEventListener('click', function() {
     const open = navEl.classList.toggle('nav-open');
     this.setAttribute('aria-expanded', open);
@@ -450,5 +736,7 @@
     if (!navEl.contains(e.target)) navEl.classList.remove('nav-open');
   });
 </script>
+</body>
+</html>
 </body>
 </html>
