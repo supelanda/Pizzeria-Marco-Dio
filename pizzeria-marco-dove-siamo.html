@@ -10,23 +10,8 @@
 <title>Dove Siamo — Pizzeria Marco, Rovereto</title>
 <style>
 /* NAV */
-  
-  
-  
-  
-  
-  
-  
-  
-  
-
   /* PAGE HERO */
-  
   .page-hero-inner { max-width:580px; }
-  
-  
-  
-  
   /* Decorative compass in hero */
   .hero-compass {
     position:absolute; right:6rem; top:50%; transform:translateY(-50%);
@@ -34,7 +19,6 @@
     pointer-events:none;
     opacity:0; animation:fadeUp 1s .6s forwards;
   }
-
   /* MAIN LAYOUT */
   .main-wrap {
     position:relative; z-index:1;
@@ -42,14 +26,12 @@
     min-height:80vh;
     border-bottom:1px solid var(--border);
   }
-
   /* ── STYLED MAP ── */
   .map-panel {
     position:relative; overflow:hidden;
     background:var(--deep);
     border-right:1px solid var(--border);
   }
-
   /* Subtle dot-grid background for the map area */
   .map-panel::before {
     content:''; position:absolute; inset:0;
@@ -58,13 +40,10 @@
     background-position:14px 14px;
     pointer-events:none;
   }
-
   .map-svg-wrap {
     position:relative; width:100%; height:100%; min-height:600px;
   }
-
   /* Remove SVG-specific rule that no longer applies */
-
   /* Map watermark label */
   .map-watermark {
     position:absolute; bottom:1.5rem; left:50%; transform:translateX(-50%);
@@ -81,7 +60,6 @@
     position:absolute; top:1.2rem; right:1.2rem;
     width:60px; height:60px; opacity:.25;
   }
-
   /* Open Maps button on map */
   .map-open-btn {
     position:absolute; bottom:3.5rem; left:50%; transform:translateX(-50%);
@@ -95,13 +73,11 @@
     white-space:nowrap;
   }
   .map-open-btn:hover { border-color:var(--gold); background:rgba(201,151,58,.1); }
-
   /* ── INFO PANEL ── */
   .info-panel {
     padding:5rem 4rem;
     display:flex; flex-direction:column; gap:3.5rem;
   }
-
   .info-block {}
   .info-block-label {
     font-size:.75rem; letter-spacing:.32em; text-transform:uppercase;
@@ -116,7 +92,6 @@
   .info-address-sub {
     font-size:.95rem; color:var(--muted); margin-top:.5rem; font-style:italic;
   }
-
   /* Hours table */
   .hours-table { width:100%; }
   .hours-row {
@@ -135,7 +110,6 @@
     padding:.2rem .55rem; border:1px solid var(--border); margin-left:.5rem;
   }
   .hours-row.closed .time { color:var(--muted); opacity:.5; }
-
   /* Services */
   .services-grid {
     display:grid; grid-template-columns:1fr 1fr; gap:.7rem;
@@ -148,7 +122,6 @@
   }
   .service-item:hover { border-color:rgba(201,151,58,.4); color:var(--cream); }
   .service-icon { font-size:1.1rem; flex-shrink:0; }
-
   /* Transport */
   .transport-list { display:flex; flex-direction:column; gap:.8rem; }
   .transport-item {
@@ -161,10 +134,8 @@
   }
   .transport-text { font-size:.9rem; color:var(--muted); }
   .transport-text strong { display:block; color:var(--cream); font-size:.95rem; margin-bottom:.15rem; }
-
   /* CTA buttons */
   .cta-row { display:flex; gap:1rem; flex-wrap:wrap; padding-top:1rem; }
-
   /* ── BOOKING MODAL ── */
   .modal-overlay {
     position:fixed; inset:0; z-index:500;
@@ -175,7 +146,6 @@
     transition:opacity .3s ease;
   }
   .modal-overlay.open { opacity:1; pointer-events:all; }
-
   .modal-box {
     width:100%; max-width:520px;
     background:var(--charcoal);
@@ -187,7 +157,6 @@
     max-height:90vh; overflow-y:auto;
   }
   .modal-overlay.open .modal-box { transform:translateY(0); }
-
   .modal-close {
     position:absolute; top:1rem; right:1.2rem;
     background:none; border:none; color:var(--muted);
@@ -195,7 +164,6 @@
     transition:color .2s;
   }
   .modal-close:hover { color:var(--cream); }
-
   .modal-eyebrow {
     font-size:.72rem; letter-spacing:.35em; text-transform:uppercase;
     color:var(--gold); margin-bottom:.6rem; display:block;
@@ -206,7 +174,6 @@
     line-height:1.1; margin-bottom:1.8rem;
   }
   .modal-title em { font-style:italic; color:var(--gold-lt); }
-
   .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
   .form-group { margin-bottom:1.1rem; }
   .form-group label {
@@ -231,7 +198,6 @@
   .form-group input::placeholder,
   .form-group textarea::placeholder { color:var(--muted); font-style:italic; }
   .form-group textarea { resize:vertical; min-height:80px; }
-
   .form-submit {
     width:100%; margin-top:.6rem;
     font-family:'Cormorant Garamond',serif;
@@ -242,7 +208,6 @@
   }
   .form-submit:hover:not(:disabled) { background:var(--gold-lt); }
   .form-submit:disabled { opacity:.55; cursor:not-allowed; }
-
   .form-error {
     margin-top:.8rem; padding:.65rem .9rem;
     background:rgba(140,46,34,.18); border:1px solid rgba(200,80,60,.3);
@@ -250,7 +215,6 @@
     display:none;
   }
   .form-error.show { display:block; }
-
   /* Toast notification */
   .toast-booking {
     position:fixed; bottom:1.6rem; right:1.6rem; z-index:9999;
@@ -268,11 +232,6 @@
     .modal-box { padding:2rem 1.4rem 1.8rem; }
     .form-row { grid-template-columns:1fr; }
   }
-  
-  
-  
-  
-
   /* ── NEIGHBOURHOOD ── */
   .neighbourhood {
     position:relative; z-index:1;
@@ -305,23 +264,10 @@
     margin-top:.7rem; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
     color:var(--gold); opacity:.7;
   }
-
   /* FOOTER */
-  
-  
-  
-  
-
-  
     to   { opacity:1; transform:translateY(0); }
   }
-  
-  
-
   @media(max-width:900px){
-    
-    
-    
     .hero-compass { display:none; }
     .main-wrap { grid-template-columns:1fr; }
     .map-panel { border-right:none; border-bottom:1px solid var(--border); }
@@ -334,7 +280,6 @@
 </style>
 </head>
 <body>
-
 <!-- NAV -->
 <nav id="nav">
   <a href="index.html" class="nav-logo">Pizzeria <span>Marco</span></a>
@@ -348,7 +293,6 @@
     <span></span><span></span><span></span>
   </button>
 </nav>
-
 <!-- HERO -->
 <section class="page-hero">
   <div class="page-hero-inner">
@@ -377,10 +321,8 @@
     <circle cx="100" cy="100" r="3" fill="#16100a"/>
   </svg>
 </section>
-
 <!-- MAIN: MAP + INFO -->
 <div class="main-wrap">
-
   <!-- GOOGLE MAPS -->
   <div class="map-panel">
     <div class="map-svg-wrap" style="padding:0; position:relative; overflow:hidden;">
@@ -395,24 +337,18 @@
         title="Pizzeria Marco — Vicolo Paganini, Rovereto"
       ></iframe>
     </div>
-
     <a href="https://maps.google.com/?q=Pizzeria+Marco+Rovereto+Vicolo+Paganini" target="_blank" class="map-open-btn">
       Apri in Google Maps →
     </a>
-
     <div class="map-watermark">Rovereto · Trentino-Alto Adige</div>
   </div>
-
-
   <!-- INFO PANEL -->
   <div class="info-panel reveal">
-
     <div class="info-block">
       <div class="info-block-label">Indirizzo</div>
       <div class="info-address">Vicolo Paganini<br>38068 Rovereto (TN)</div>
       <div class="info-address-sub">Vicino al Teatro Zandonai · Centro storico</div>
     </div>
-
     <div class="info-block">
       <div class="info-block-label">Orari di apertura</div>
       <table class="hours-table">
@@ -425,7 +361,6 @@
         <tr class="hours-row"><td class="day">Domenica</td><td class="time">18:00–22:00</td></tr>
       </table>
     </div>
-
     <div class="info-block">
       <div class="info-block-label">Servizi disponibili</div>
       <div class="services-grid">
@@ -439,7 +374,6 @@
         <div class="service-item"><span class="service-icon">✨</span>Impasto Khorasan</div>
       </div>
     </div>
-
     <div class="info-block">
       <div class="info-block-label">Come raggiungerci</div>
       <div class="transport-list">
@@ -466,7 +400,6 @@
         </div>
       </div>
     </div>
-
     <div class="cta-row">
       <button class="btn-primary" id="openBooking">Prenota un tavolo</button>
       <a href="https://maps.google.com/?q=Pizzeria+Marco+Rovereto" target="_blank" class="btn-outline">Indicazioni stradali</a>
@@ -475,7 +408,6 @@
 
   </div>
 </div>
-
 <!-- NEIGHBOURHOOD -->
 <section class="neighbourhood">
   <span class="eyebrow reveal">Nei dintorni</span>
@@ -508,13 +440,11 @@
     </div>
   </div>
 </section>
-
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">Pizzeria <em>Marco</em></div>
   <div class="footer-copy">© 2025 Pizzeria Marco · Vicolo Paganini, Rovereto (TN) · Tutti i diritti riservati</div>
 </footer>
-
 <!-- BOOKING MODAL -->
 <div class="modal-overlay" id="bookingModal" role="dialog" aria-modal="true" aria-label="Prenota un tavolo">
   <div class="modal-box">
@@ -532,7 +462,6 @@
         <input type="tel" id="b-tel" placeholder="333 123 4567" required>
       </div>
     </div>
-
     <div class="form-row">
       <div class="form-group">
         <label for="b-data">Data *</label>
@@ -545,7 +474,6 @@
         </select>
       </div>
     </div>
-
     <div class="form-group">
       <label for="b-persone">Numero di persone *</label>
       <select id="b-persone" required>
@@ -556,7 +484,6 @@
         <option>10</option><option>11</option><option>12</option>
       </select>
     </div>
-
     <div class="form-group">
       <label for="b-note">Note (opzionale)</label>
       <textarea id="b-note" placeholder="Allergie, occasioni speciali, richieste particolari…"></textarea>
@@ -566,12 +493,10 @@
     <button class="form-submit" id="bookingSubmit">Invia prenotazione</button>
   </div>
 </div>
-
 <!-- Toast conferma -->
 <div class="toast-booking" id="bookingToast">
   ✓ Prenotazione ricevuta! Ti confermiamo al più presto.
 </div>
-
 <script type="module">
   // ─────────────────────────────────────────────────────────────
   //  ⚠️  INSERISCI QUI LE TUE CREDENZIALI SUPABASE
@@ -583,11 +508,9 @@
 
   import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
   const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
   // ── Orari disponibili ──────────────────────────────────────
   const ALL_SLOTS = ['11:30','12:00','12:30','13:00','13:30',
                      '18:00','18:30','19:00','19:30','20:00','20:30','21:00','21:30'];
-
   function populateSlots(dateVal) {
     const sel = document.getElementById('b-ora');
     sel.innerHTML = '<option value="">— scegli —</option>';
@@ -604,7 +527,6 @@
       sel.appendChild(opt);
     });
   }
-
   // ── Data minima = domani (no domenica = giorno 0 = ok, lunedì già aperto) ──
   function setMinDate() {
     const inp = document.getElementById('b-data');
@@ -615,7 +537,6 @@
   document.getElementById('b-data').addEventListener('change', e => {
     populateSlots(e.target.value);
   });
-
   // ── Apri / chiudi modale ───────────────────────────────────
   const overlay = document.getElementById('bookingModal');
 
