@@ -1,0 +1,387 @@
+/*
+ * pizzeria-marco-admin.css
+ * Styles for the admin dashboard (standalone, not used by public pages).
+ * ─────────────────────────────────────────────────────────────
+ */
+:root {
+  --ink:      #16100a;
+  --charcoal: #1e1710;
+  --deep:     #130e08;
+  --panel:    #1a1209;
+  --cream:    #f4e9d4;
+  --warm:     #ede0c4;
+  --gold:     #c9973a;
+  --gold-lt:  #e8c06a;
+  --muted:    #8a7d68;
+  --border:   rgba(201,151,58,.22);
+  --green:    #4a7c5a;
+  --green-lt: #6aaa80;
+  --red:      #8c2e22;
+  --red-lt:   #e07060;
+  --orange:   #b86a20;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  background:var(--charcoal);
+  color:var(--cream);
+  font-family:'Cormorant Garamond', serif;
+  font-size:17px;
+  line-height:1.6;
+  min-height:100vh;
+}
+
+/* ── AUTH SCREEN ─────────────────────────────────────────── */
+#authScreen {
+  position:fixed; inset:0; z-index:500;
+  background:var(--deep);
+  display:flex; align-items:center; justify-content:center;
+  padding:1.5rem;
+  transition:opacity .3s ease;
+}
+#authScreen.hidden { opacity:0; pointer-events:none; }
+
+.auth-box {
+  width:100%; max-width:420px;
+  border:1px solid var(--border);
+  padding:3rem 2.8rem 2.6rem;
+  background:var(--charcoal);
+}
+.auth-logo {
+  font-family:'Playfair Display',serif;
+  font-size:1.6rem; font-weight:900; color:var(--cream);
+  margin-bottom:.3rem;
+}
+.auth-logo em { font-style:italic; color:var(--gold-lt); }
+.auth-subtitle {
+  font-size:.78rem; letter-spacing:.28em; text-transform:uppercase;
+  color:var(--gold); margin-bottom:2.2rem;
+}
+.auth-field { margin-bottom:1.1rem; }
+.auth-field label {
+  display:block; font-size:.7rem; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--gold); margin-bottom:.45rem;
+}
+.auth-field input {
+  width:100%; font-family:'Cormorant Garamond',serif; font-size:1rem;
+  background:rgba(26,18,9,.85); border:1px solid var(--border);
+  color:var(--cream); padding:.75rem 1rem; outline:none;
+  transition:border-color .2s;
+}
+.auth-field input:focus { border-color:rgba(201,151,58,.6); }
+.auth-field input::placeholder { color:var(--muted); font-style:italic; }
+
+.auth-btn {
+  width:100%; margin-top:1.4rem;
+  font-family:'Cormorant Garamond',serif;
+  font-size:1rem; letter-spacing:.2em; text-transform:uppercase; font-weight:600;
+  background:var(--gold); color:var(--ink);
+  border:none; padding:.95rem; cursor:pointer;
+  transition:background .2s;
+}
+.auth-btn:hover:not(:disabled) { background:var(--gold-lt); }
+.auth-btn:disabled { opacity:.55; cursor:not-allowed; }
+
+.auth-error {
+  margin-top:1rem; padding:.7rem .9rem;
+  background:rgba(140,46,34,.18); border:1px solid rgba(200,80,60,.3);
+  color:var(--red-lt); font-size:.9rem; font-style:italic;
+  display:none;
+}
+.auth-error.show { display:block; }
+
+/* OTP step */
+#otpStep { display:none; }
+#otpStep.show { display:block; }
+.auth-info {
+  font-size:.88rem; color:var(--muted); font-style:italic;
+  margin-bottom:1.2rem; line-height:1.5;
+}
+
+/* ── MAIN APP ────────────────────────────────────────────── */
+#appScreen { display:none; }
+#appScreen.show { display:block; }
+
+/* ── TOP BAR ─────────────────────────────────────────────── */
+.topbar {
+  position:sticky; top:0; z-index:100;
+  background:rgba(14,10,6,.97); backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:.9rem 1.8rem;
+  display:flex; align-items:center; gap:1rem; flex-wrap:wrap;
+}
+.topbar-logo {
+  font-family:'Playfair Display',serif;
+  font-size:1.1rem; font-weight:900; color:var(--cream); margin-right:.5rem;
+}
+.topbar-logo em { font-style:italic; color:var(--gold-lt); }
+.topbar-badge {
+  font-size:.68rem; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--muted); border:1px solid var(--border); padding:.2rem .7rem;
+}
+.topbar-spacer { flex:1; }
+.topbar-search {
+  position:relative; flex:1; max-width:280px;
+}
+.topbar-search input {
+  width:100%; font-family:'Cormorant Garamond',serif; font-size:.92rem;
+  background:rgba(26,18,9,.85); border:1px solid var(--border);
+  color:var(--cream); padding:.55rem 2.2rem .55rem .9rem; outline:none;
+  transition:border-color .2s;
+}
+.topbar-search input:focus { border-color:rgba(201,151,58,.5); }
+.topbar-search input::placeholder { color:var(--muted); font-style:italic; }
+.topbar-search .s-icon { position:absolute; right:.6rem; top:50%; transform:translateY(-50%); color:var(--muted); font-size:.9rem; pointer-events:none; }
+.btn-logout {
+  font-family:'Cormorant Garamond',serif;
+  font-size:.78rem; letter-spacing:.18em; text-transform:uppercase;
+  background:transparent; color:var(--muted); border:1px solid var(--border);
+  padding:.5rem 1.1rem; cursor:pointer; transition:border-color .2s, color .2s;
+}
+.btn-logout:hover { border-color:var(--red-lt); color:var(--red-lt); }
+
+/* ── STATS BAR ───────────────────────────────────────────── */
+.statsbar {
+  background:var(--deep); border-bottom:1px solid var(--border);
+  padding:.8rem 1.8rem;
+  display:flex; align-items:center; gap:2rem; flex-wrap:wrap;
+}
+.stat-chip {
+  font-size:.82rem; color:var(--muted);
+}
+.stat-chip b { color:var(--gold); font-weight:600; }
+
+/* ── WEEK NAV ────────────────────────────────────────────── */
+.week-nav {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:1.4rem 1.8rem 0;
+  gap:1rem;
+}
+.week-label {
+  font-family:'Playfair Display',serif;
+  font-size:1.1rem; font-weight:700; color:var(--cream);
+}
+.week-label em { font-style:italic; color:var(--gold-lt); }
+.btn-week {
+  font-family:'Cormorant Garamond',serif;
+  font-size:.82rem; letter-spacing:.14em; text-transform:uppercase;
+  background:transparent; color:var(--muted); border:1px solid var(--border);
+  padding:.5rem 1.1rem; cursor:pointer; transition:border-color .2s, color .2s;
+  white-space:nowrap;
+}
+.btn-week:hover { border-color:var(--gold); color:var(--gold-lt); }
+
+/* ── DAY GRID ────────────────────────────────────────────── */
+.day-list {
+  padding:1rem 1.8rem 4rem;
+  display:flex; flex-direction:column; gap:.6rem;
+}
+
+.day-card {
+  border:1px solid var(--border);
+  background:var(--panel);
+  overflow:hidden;
+  transition:border-color .2s;
+}
+.day-card.today { border-color:rgba(201,151,58,.5); }
+.day-card.today .day-header { background:rgba(201,151,58,.08); }
+
+.day-header {
+  display:flex; align-items:center; gap:1rem;
+  padding:.85rem 1.2rem;
+  cursor:pointer;
+  user-select:none;
+  transition:background .2s;
+}
+.day-header:hover { background:rgba(201,151,58,.04); }
+
+.day-name {
+  font-family:'Playfair Display',serif;
+  font-size:1rem; font-weight:700; color:var(--cream);
+  min-width:110px;
+}
+.day-card.today .day-name { color:var(--gold-lt); }
+.day-date { font-size:.82rem; color:var(--muted); }
+.day-count {
+  margin-left:auto;
+  font-size:.72rem; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--muted); border:1px solid var(--border); padding:.2rem .65rem;
+}
+.day-card.today .day-count { border-color:rgba(201,151,58,.35); color:var(--gold); }
+.day-arrow { color:var(--muted); font-size:.8rem; transition:transform .2s; }
+.day-card.open .day-arrow { transform:rotate(90deg); }
+
+.day-body {
+  display:none; border-top:1px solid var(--border);
+  padding:.6rem .8rem 1rem;
+}
+.day-card.open .day-body { display:block; }
+
+.no-bookings {
+  padding:1.2rem; text-align:center;
+  font-size:.9rem; color:var(--muted); font-style:italic;
+}
+
+/* ── BOOKING CARD ────────────────────────────────────────── */
+.booking-card {
+  background:rgba(26,18,9,.7);
+  border:1px solid var(--border);
+  padding:1rem 1.1rem;
+  margin-bottom:.5rem;
+  position:relative;
+  transition:border-color .2s;
+}
+.booking-card:last-child { margin-bottom:0; }
+.booking-card.cancellata { opacity:.5; }
+
+.booking-top {
+  display:flex; align-items:flex-start; gap:.8rem; flex-wrap:wrap;
+  margin-bottom:.5rem;
+}
+.booking-ora {
+  font-family:'Playfair Display',serif;
+  font-size:1.1rem; font-weight:700; color:var(--gold);
+  min-width:52px;
+}
+.booking-name {
+  font-family:'Playfair Display',serif;
+  font-size:1rem; font-weight:600; color:var(--cream);
+  flex:1;
+}
+.booking-persone {
+  font-size:.8rem; color:var(--muted); white-space:nowrap;
+  padding:.15rem .5rem; border:1px solid var(--border);
+  font-style:italic;
+}
+
+.booking-tel {
+  font-size:.88rem; color:var(--gold); text-decoration:none;
+  display:inline-flex; align-items:center; gap:.3rem;
+  margin-bottom:.35rem;
+  transition:color .2s;
+}
+.booking-tel:hover { color:var(--gold-lt); }
+
+.booking-note {
+  font-size:.85rem; color:var(--muted); font-style:italic;
+  margin-bottom:.5rem; padding:.5rem .7rem;
+  border-left:2px solid var(--border);
+}
+
+.booking-footer {
+  display:flex; align-items:center; gap:.6rem; flex-wrap:wrap;
+  margin-top:.7rem;
+}
+.badge-stato {
+  font-size:.68rem; letter-spacing:.14em; text-transform:uppercase;
+  padding:.22rem .65rem; border:1px solid;
+  border-radius:1px;
+}
+.badge-stato.in_attesa   { color:#e8c06a; border-color:rgba(232,192,106,.3); background:rgba(232,192,106,.07); }
+.badge-stato.confermata  { color:var(--green-lt); border-color:rgba(106,170,128,.3); background:rgba(106,170,128,.07); }
+.badge-stato.cancellata  { color:var(--red-lt); border-color:rgba(200,80,60,.25); background:rgba(200,80,60,.06); }
+
+.action-btns { margin-left:auto; display:flex; gap:.5rem; }
+.btn-conferma, .btn-cancella {
+  font-family:'Cormorant Garamond',serif;
+  font-size:.76rem; letter-spacing:.14em; text-transform:uppercase;
+  border:none; padding:.5rem .9rem; cursor:pointer;
+  transition:opacity .2s, transform .15s;
+  min-height:36px;
+}
+.btn-conferma { background:var(--green); color:#d0f0d8; }
+.btn-conferma:hover:not(:disabled) { opacity:.85; transform:translateY(-1px); }
+.btn-conferma:disabled { background:rgba(74,124,90,.3); color:var(--muted); cursor:not-allowed; }
+.btn-cancella { background:var(--red); color:#f0d0c8; }
+.btn-cancella:hover:not(:disabled) { opacity:.85; transform:translateY(-1px); }
+.btn-cancella:disabled { opacity:.4; cursor:not-allowed; }
+
+/* ── EXPORT BTN ──────────────────────────────────────────── */
+.export-row {
+  padding:.5rem 1.2rem .8rem;
+  border-top:1px solid var(--border);
+}
+.btn-export {
+  font-family:'Cormorant Garamond',serif;
+  font-size:.75rem; letter-spacing:.18em; text-transform:uppercase;
+  background:transparent; color:var(--muted); border:1px solid var(--border);
+  padding:.45rem 1rem; cursor:pointer; transition:border-color .2s, color .2s;
+}
+.btn-export:hover { border-color:var(--gold); color:var(--gold-lt); }
+
+/* ── SEARCH HIGHLIGHT ────────────────────────────────────── */
+mark { background:rgba(201,151,58,.25); color:var(--gold-lt); padding:0 2px; }
+
+/* ── TOAST / ALERT ───────────────────────────────────────── */
+.toast {
+  position:fixed; bottom:1.4rem; right:1.4rem; z-index:2000;
+  padding:.9rem 1.4rem; font-family:'Cormorant Garamond',serif;
+  font-size:.95rem; font-style:italic; max-width:340px;
+  box-shadow:0 8px 32px rgba(0,0,0,.4);
+  transform:translateY(10px); opacity:0;
+  transition:opacity .3s ease, transform .3s ease;
+  pointer-events:none;
+}
+.toast.show { opacity:1; transform:translateY(0); }
+.toast.green { background:#243028; border:1px solid #3a6040; color:#8fd898; }
+.toast.orange { background:#2c1e0c; border:1px solid #7a4a18; color:#e0a060; }
+.toast.red   { background:#2c1010; border:1px solid #6a2018; color:#e08080; }
+
+/* ── SPINNER ─────────────────────────────────────────────── */
+.mini-spinner {
+  display:inline-block; width:14px; height:14px;
+  border:2px solid rgba(244,233,212,.2); border-top-color:var(--gold);
+  border-radius:50%; animation:spin .6s linear infinite;
+  vertical-align:middle; margin-right:.4rem;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+
+.loading-state {
+  padding:2rem; text-align:center;
+  font-size:.9rem; color:var(--muted); font-style:italic;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media(max-width:600px){
+  .topbar { padding:.8rem 1rem; gap:.7rem; }
+  .topbar-search { max-width:100%; order:3; flex:1 1 100%; }
+  .week-nav { padding:1rem 1rem 0; }
+  .day-list  { padding:.8rem 1rem 4rem; }
+  .booking-top { gap:.5rem; }
+  .action-btns { width:100%; justify-content:flex-end; }
+  .statsbar { padding:.7rem 1rem; gap:1rem; }
+  .toast { bottom:.8rem; right:.8rem; left:.8rem; max-width:none; }
+}
+
+/* ── SQL DETAILS ─────────────────────────────────────────── */
+.sql-block {
+  margin:2rem 1.8rem 3rem;
+  border:1px solid var(--border);
+}
+.sql-block summary {
+  padding:.9rem 1.2rem;
+  font-size:.75rem; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--muted); cursor:pointer; list-style:none;
+  background:var(--deep);
+  transition:color .2s;
+}
+.sql-block summary:hover { color:var(--gold); }
+.sql-block summary::before { content:'▸ '; }
+.sql-block[open] summary::before { content:'▾ '; }
+.sql-content {
+  padding:1.2rem 1.4rem;
+  background:var(--deep);
+  border-top:1px solid var(--border);
+}
+.sql-content pre {
+  font-family:'Courier New', monospace;
+  font-size:.78rem; color:#9db888; line-height:1.7;
+  white-space:pre-wrap; word-break:break-word;
+  overflow-x:auto;
+}
+.sql-content .note {
+  font-size:.82rem; color:var(--muted); font-style:italic;
+  margin-bottom:.8rem; line-height:1.5;
+}
