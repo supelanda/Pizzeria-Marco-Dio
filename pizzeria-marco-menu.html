@@ -1,74 +1,20 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="pizzeria-marco-base.css">
+<link rel="stylesheet" href="pizzeria-marco-responsive.css">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Menu — Pizzeria Marco, Rovereto</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="pizzeria-marco-responsive.css">
 <style>
-  :root {
-    --ink:      #16100a;
-    --charcoal: #1e1710;
-    --deep:     #130e08;
-    --panel:    #1a1209;
-    --cream:    #f4e9d4;
-    --warm:     #ede0c4;
-    --gold:     #c9973a;
-    --gold-lt:  #e8c06a;
-    --terra:    #b85c2c;
-    --green:    #4a7c5a;
-    --muted:    #8a7d68;
-    --border:   rgba(201,151,58,.22);
-    --border-s: rgba(201,151,58,.1);
-  }
-
-  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-  html { scroll-behavior:smooth; }
-
-  body {
-    background: var(--charcoal);
-    color: var(--cream);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 18px;
-    line-height: 1.65;
-    overflow-x: hidden;
-  }
-  body::before {
-    content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
-    opacity:.4;
-  }
-
-  nav {
-    position:fixed; top:0; left:0; right:0; z-index:100;
-    display:flex; align-items:center; justify-content:space-between;
-    padding:1.2rem 4rem;
-    background: linear-gradient(to bottom, rgba(22,16,10,.97) 0%, rgba(22,16,10,0) 100%);
-    transition: background .4s;
-  }
-  nav.scrolled { background: rgba(16,11,7,.97); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
-  .nav-logo { font-family:'Playfair Display',serif; font-size:1.3rem; letter-spacing:.08em; color:var(--gold-lt); text-decoration:none; }
-  .nav-logo span { font-style:italic; color:var(--cream); }
-  .nav-links { display:flex; gap:2rem; list-style:none; }
-  .nav-links a { font-size:.88rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); text-decoration:none; transition:color .2s; }
-  .nav-links a:hover, .nav-links a.active { color:var(--gold-lt); }
-  .nav-cta { font-family:'Cormorant Garamond',serif; font-size:.9rem; letter-spacing:.16em; text-transform:uppercase; background:var(--gold); color:var(--ink); border:none; padding:.65rem 1.8rem; cursor:pointer; font-weight:600; text-decoration:none; display:inline-block; transition:background .2s; }
-  .nav-cta:hover { background:var(--gold-lt); }
-
-  /* PAGE HERO */
-  .page-hero {
-    position:relative; z-index:1;
-    padding:11rem 4rem 5rem;
-    border-bottom:1px solid var(--border);
-    overflow:hidden;
-    display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:end;
-  }
-  .eyebrow { font-size:.82rem; letter-spacing:.38em; text-transform:uppercase; color:var(--gold); margin-bottom:1.2rem; display:block; opacity:0; animation:fadeUp .7s .1s forwards; }
-  .page-title { font-family:'Playfair Display',serif; font-size:clamp(3.2rem,7vw,5.8rem); font-weight:900; line-height:.92; color:var(--cream); opacity:0; animation:fadeUp .8s .25s forwards; }
-  .page-title em { display:block; font-style:italic; color:var(--gold-lt); }
-  .page-sub { margin-top:1.6rem; font-size:1.05rem; color:var(--muted); max-width:420px; opacity:0; animation:fadeUp .8s .4s forwards; }
+/* PAGE HERO */
+  
+  
+  
+  
+  
 
   .hero-dough-callout { display:flex; flex-direction:column; gap:1rem; align-items:flex-end; opacity:0; animation:fadeUp .9s .55s forwards; }
   .hero-dough-callout .dc-label { font-size:.75rem; letter-spacing:.3em; text-transform:uppercase; color:var(--muted); text-align:right; }
@@ -167,7 +113,7 @@
   .dough-tag.avail { color:var(--gold); border-color:rgba(201,151,58,.3); }
   .dough-tag.lit   { background:var(--gold); color:var(--ink); border-color:var(--gold); }
 
-  .card-footer { border-top:1px solid var(--border-s); margin-top:1.3rem; padding-top:1rem; display:flex; gap:0; }
+  .card-
   .size-col { display:flex; flex-direction:column; align-items:center; flex:1; padding:.4rem .4rem; border-right:1px solid var(--border-s); transition:background .2s; }
   .size-col:last-child { border-right:none; }
   .size-col:hover { background:rgba(201,151,58,.04); }
@@ -191,22 +137,22 @@
   .legend-name { font-family:'Playfair Display',serif; font-size:.95rem; font-weight:700; color:var(--cream); margin-bottom:.3rem; }
   .legend-desc { font-size:.85rem; color:var(--muted); line-height:1.45; }
 
-  footer { position:relative; z-index:1; border-top:1px solid var(--border); padding:3rem 0 2rem; text-align:center; }
-  .footer-logo { font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:900; color:var(--cream); }
-  .footer-logo em { font-style:italic; color:var(--gold-lt); }
-  .footer-links { display:flex; gap:2rem; justify-content:center; list-style:none; margin:.7rem 0; }
-  .footer-links a { font-size:.78rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); text-decoration:none; transition:color .2s; }
-  .footer-links a:hover { color:var(--gold); }
-  .footer-copy { font-size:.78rem; color:var(--muted); opacity:.5; }
+  
+  
+  
+  
+  
+  
+  
 
-  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+   to{opacity:1;transform:translateY(0)} }
   @keyframes cardIn { to{opacity:1;transform:translateY(0)} }
   .pizza-card { opacity:0; transform:translateY(10px); }
 
   @media(max-width:900px){
-    nav { padding:1rem 1.5rem; }
-    .nav-links { display:none; }
-    .page-hero { padding:9rem 1.5rem 3rem; grid-template-columns:1fr; gap:2rem; }
+    
+    
+    
     .hero-dough-callout { align-items:flex-start; }
     .hero-note { text-align:left; }
     .hero-stats { flex-wrap:wrap; }
@@ -218,18 +164,18 @@
   }
 
   /* ─── DOUGHS (from homepage) ─── */
-  .doughs { padding:7rem 0; border-top:1px solid var(--border); }
-  .doughs-inner { display:grid; grid-template-columns:1fr 2fr; gap:5rem; align-items:start; }
-  .doughs-cards { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1px; background:var(--border); border:1px solid var(--border); }
-  .dough-card { background:var(--charcoal); padding:2.4rem 2rem; text-align:center; transition:background .25s; }
-  .dough-card:hover { background:#221a10; }
-  .dough-icon { font-size:2.5rem; margin-bottom:1rem; display:block; }
-  .dough-name { font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:700; color:var(--cream); margin-bottom:.6rem; }
-  .dough-desc { font-size:.9rem; color:var(--muted); line-height:1.5; }
-  .section-eyebrow { font-size:.82rem; letter-spacing:.38em; text-transform:uppercase; color:var(--gold); margin-bottom:1.2rem; display:block; font-family:'Cormorant Garamond',serif; }
-  .section-title { font-family:'Playfair Display',serif; font-size:clamp(2.4rem,5vw,3.6rem); line-height:1.08; font-weight:700; color:var(--cream); margin-bottom:1.4rem; }
-  .section-title em { font-style:italic; color:var(--gold-lt); }
-  .section-body { font-size:1.1rem; color:var(--muted); line-height:1.75; max-width:540px; }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  .section-
 </style>
 </head>
 <body>
