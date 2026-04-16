@@ -450,7 +450,7 @@
   <div class="modal-box">
     <button class="modal-close" id="closeBooking" aria-label="Chiudi">✕</button>
     <span class="modal-eyebrow">Pizzeria Marco · Rovereto</span>
-    <h2 class="modal-title">Prenota<em>il tuo tavolo</em></h2>
+    <h2 class="modal-title">Prenota<em> il tuo tavolo</em></h2>
 
     <div class="form-row">
       <div class="form-group">
@@ -498,17 +498,12 @@
   ✓ Prenotazione ricevuta! Ti confermiamo al più presto.
 </div>
 <script type="module">
-  // ─────────────────────────────────────────────────────────────
-  //  ⚠️  INSERISCI QUI LE TUE CREDENZIALI SUPABASE
-  //      Vai su supabase.com → tuo progetto → Settings → API
-  // ─────────────────────────────────────────────────────────────
-  const SUPABASE_URL      = 'https://urdfwujrekisuylowqjc.supabase.co'; // ← sostituisci
+ const SUPABASE_URL      = 'https://urdfwujrekisuylowqjc.supabase.co';
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVyZGZ3dWpyZWtpc3V5bG93cWpjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzMzQ0ODAsImV4cCI6MjA5MTkxMDQ4MH0.4jg_co4O8bkFMtx6y4jt7lPfQjFG6sgUMgZpDRdM3Xw';                  // ← sostituisci
-  // ─────────────────────────────────────────────────────────────
 
   import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
   const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  // ── Orari disponibili ──────────────────────────────────────
+
   const ALL_SLOTS = ['11:30','12:00','12:30','13:00','13:30',
                      '18:00','18:30','19:00','19:30','20:00','20:30','21:00','21:30'];
   function populateSlots(dateVal) {
@@ -527,7 +522,7 @@
       sel.appendChild(opt);
     });
   }
-  // ── Data minima = domani (no domenica = giorno 0 = ok, lunedì già aperto) ──
+ 
   function setMinDate() {
     const inp = document.getElementById('b-data');
     const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
@@ -537,7 +532,7 @@
   document.getElementById('b-data').addEventListener('change', e => {
     populateSlots(e.target.value);
   });
-  // ── Apri / chiudi modale ───────────────────────────────────
+  
   const overlay = document.getElementById('bookingModal');
 
   document.getElementById('openBooking').addEventListener('click', () => {
@@ -556,8 +551,8 @@
   overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-  // ── Submit ─────────────────────────────────────────────────
-  document.getElementById('bookingSubmit').addEventListener('click', async () => {
+ 
+ document.getElementById('bookingSubmit').addEventListener('click', async () => {
     const nome    = document.getElementById('b-nome').value.trim();
     const tel     = document.getElementById('b-tel').value.trim();
     const data    = document.getElementById('b-data').value;
@@ -575,14 +570,10 @@
       return;
     }
 
-    // Blocca domenica (getDay() === 0) — il ristorante è chiuso a pranzo di domenica
-    // ma aperto a cena, quindi non blocchiamo. Nessun giorno di chiusura totale.
-
     btn.disabled = true;
     btn.textContent = 'Invio in corso…';
 
-    // ⚠️ Se SUPABASE_URL non è ancora configurato, mostra istruzione chiara
-    if (SUPABASE_URL.includes('YOUR_PROJECT')) {
+   if (SUPABASE_URL.includes('YOUR_PROJECT')) {
       errEl.textContent = 'Supabase non configurato. Sostituisci SUPABASE_URL e SUPABASE_ANON_KEY nello script.';
       errEl.classList.add('show');
       btn.disabled = false;
@@ -607,7 +598,6 @@
       return;
     }
 
-    // Successo
     closeModal();
     document.getElementById('b-nome').value = '';
     document.getElementById('b-tel').value  = '';
@@ -622,7 +612,6 @@
 </script>
 
 <script>
-  // "Oggi" highlight
   const days = document.querySelectorAll('.hours-row');
   const todayIdx = new Date().getDay();
   const map = {1:0, 2:1, 3:2, 4:3, 5:4, 6:5, 0:6};
@@ -637,7 +626,6 @@
     }
   }
 
-  // Scroll reveal
   const reveals = document.querySelectorAll('.reveal');
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => {
@@ -646,7 +634,6 @@
   }, { threshold:.1 });
   reveals.forEach(el => obs.observe(el));
 
-  // Sticky nav + hamburger
   const navEl = document.getElementById('nav');
   window.addEventListener('scroll', () => navEl.classList.toggle('scrolled', window.scrollY > 60));
   document.getElementById('navHamburger').addEventListener('click', function() {
