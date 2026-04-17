@@ -3,190 +3,590 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Ordine Asporto — Pizzeria Marco</title>
-
+<title>Ordina Asporto — Pizzeria Marco, Rovereto</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Cormorant+Garamond:wght@300;400;500&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="pizzeria-marco-base.css">
-
+<link rel="stylesheet" href="pizzeria-marco-responsive.css">
 <style>
-.form-section {
-  padding: 10rem 0 6rem;
+/* ─── PAGE HERO (override base .page-hero for 1-col layout) ─── */
+.page-hero {
+  display: block;
+  padding: 10rem 4rem 5rem;
 }
-
-.form-box {
-  max-width: 520px;
-  margin: 0 auto;
+.page-hero-inner { max-width: 640px; }
+.page-hero-sub {
+  margin-top: 1.4rem;
+  font-size: 1.1rem; font-style: italic; color: var(--muted);
+  max-width: 520px; line-height: 1.7;
+  opacity: 0; animation: fadeUp .8s .4s forwards;
+}
+.hero-orari {
+  margin-top: 2rem;
+  display: flex; gap: 2rem; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp .8s .6s forwards;
+}
+.orario-chip {
   border: 1px solid var(--border);
-  padding: 2.5rem;
-  background: var(--panel);
+  padding: .55rem 1.2rem;
+  font-size: .8rem; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--muted);
+}
+.orario-chip b { color: var(--gold); }
+
+/* ─── MAIN LAYOUT ─── */
+.asporto-main {
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid var(--border);
+  min-height: 70vh;
 }
 
-.form-title {
+/* ─── ORDER FORM PANEL ─── */
+.form-panel {
+  padding: 4rem;
+  border-right: 1px solid var(--border);
+}
+.form-panel-eyebrow {
+  font-size: .75rem; letter-spacing: .32em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 2rem; display: block;
+}
+
+.form-group { margin-bottom: 1.4rem; }
+.form-group label {
+  display: block;
+  font-size: .72rem; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: .5rem;
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  background: rgba(26,18,9,.85);
+  border: 1px solid var(--border);
+  color: var(--cream);
+  padding: .8rem 1.1rem;
+  outline: none;
+  transition: border-color .2s, background .2s;
+  appearance: none; -webkit-appearance: none;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: rgba(201,151,58,.6);
+  background: rgba(32,22,10,.92);
+}
+.form-group input::placeholder,
+.form-group textarea::placeholder { color: var(--muted); font-style: italic; }
+.form-group select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M0 0l6 8 6-8z' fill='%238a7d68'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1.1rem center;
+  padding-right: 2.8rem;
+  cursor: pointer;
+}
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.6;
+}
+
+/* Ordine textarea — bigger */
+.form-group textarea#pOrdine {
+  min-height: 180px;
+  font-size: 1.05rem;
+}
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+
+.form-err {
+  margin-top: .4rem;
+  font-size: .82rem; color: #e07060; font-style: italic;
+}
+
+.submit-err {
+  background: rgba(140,46,34,.15); border: 1px solid rgba(200,80,60,.3);
+  color: #e08878; padding: .8rem 1rem;
+  font-size: .9rem; font-style: italic;
+  margin-bottom: 1.2rem; display: none;
+}
+.submit-err.show { display: block; }
+
+.btn-submit {
+  width: 100%; margin-top: .5rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem; letter-spacing: .2em; text-transform: uppercase; font-weight: 600;
+  background: var(--gold); color: var(--ink);
+  border: none; padding: 1.1rem; cursor: pointer;
+  transition: background .2s, transform .15s;
+  display: flex; align-items: center; justify-content: center; gap: .6rem;
+}
+.btn-submit:hover:not(:disabled) { background: var(--gold-lt); transform: translateY(-1px); }
+.btn-submit:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+
+.spinner {
+  width: 16px; height: 16px;
+  border: 2px solid rgba(22,16,10,.25); border-top-color: var(--ink);
+  border-radius: 50%; animation: spin .6s linear infinite;
+  display: none;
+}
+.btn-submit.loading .spinner { display: block; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─── INFO PANEL ─── */
+.info-panel-aside {
+  padding: 4rem;
+  background: var(--deep);
+}
+.info-title {
   font-family: 'Playfair Display', serif;
-  font-size: 2.4rem;
-  margin-bottom: 2rem;
+  font-size: 1.6rem; font-weight: 700; color: var(--cream);
+  line-height: 1.1; margin-bottom: .8rem;
+}
+.info-title em { font-style: italic; color: var(--gold-lt); }
+.info-sub { font-size: .95rem; color: var(--muted); line-height: 1.7; margin-bottom: 2.5rem; }
+
+.info-sep {
+  height: 1px; background: var(--border);
+  margin: 2rem 0;
+}
+.info-label-sm {
+  font-size: .7rem; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: .9rem; display: block;
 }
 
-.field {
-  margin-bottom: 1.4rem;
+/* Menu highlight cards */
+.menu-highlights { display: flex; flex-direction: column; gap: .6rem; }
+.menu-hl-item {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: .65rem .9rem;
+  border: 1px solid var(--border);
+  background: rgba(26,18,9,.6);
+  transition: border-color .2s;
+  cursor: default;
+}
+.menu-hl-item:hover { border-color: rgba(201,151,58,.4); }
+.menu-hl-name {
+  font-family: 'Playfair Display', serif;
+  font-size: .95rem; color: var(--cream);
+}
+.menu-hl-price {
+  font-family: 'Playfair Display', serif;
+  font-size: .9rem; color: var(--gold);
 }
 
-.field label {
-  display:block;
-  font-size:.75rem;
-  letter-spacing:.2em;
-  text-transform:uppercase;
-  color:var(--gold);
-  margin-bottom:.4rem;
+/* Stato ordine successo */
+.success-overlay {
+  display: none;
+  flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 3rem;
+  min-height: 300px;
 }
-
-.field input,
-.field textarea {
-  width:100%;
-  padding:.7rem;
-  background:rgba(26,18,9,.85);
-  border:1px solid var(--border);
-  color:var(--cream);
+.success-overlay.show { display: flex; }
+.success-icon { font-size: 3rem; margin-bottom: 1.2rem; }
+.success-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem; font-weight: 700; color: var(--cream);
+  margin-bottom: .8rem;
 }
-
-.field textarea {
-  resize:vertical;
-  min-height:90px;
+.success-title em { font-style: italic; color: var(--gold-lt); }
+.success-sub { font-size: 1rem; color: var(--muted); font-style: italic; max-width: 380px; line-height: 1.7; }
+.success-back {
+  margin-top: 2rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .88rem; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--gold); background: none; border: 1px solid var(--border);
+  padding: .7rem 1.8rem; cursor: pointer; transition: border-color .2s;
+  text-decoration: none; display: inline-block;
 }
+.success-back:hover { border-color: var(--gold); }
 
-.error {
-  font-size:.8rem;
-  color:#e07060;
-  margin-top:.3rem;
-}
-
-button {
-  width:100%;
-}
-
+/* ─── TOAST ─── */
 .toast {
-  position:fixed;
-  bottom:2rem;
-  left:50%;
-  transform:translateX(-50%);
-  background:var(--gold);
-  color:var(--ink);
-  padding:1rem 2rem;
-  display:none;
+  position: fixed; bottom: 2rem; right: 2rem; z-index: 2000;
+  background: #2a4a2e; border: 1px solid #4a7a50;
+  color: #8fd898; padding: 1rem 1.5rem;
+  font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-style: italic;
+  max-width: 340px; box-shadow: 0 8px 32px rgba(0,0,0,.4);
+  transform: translateY(12px); opacity: 0;
+  transition: opacity .3s ease, transform .3s ease;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+
+/* ─── RESPONSIVE ─── */
+@media(max-width: 900px) {
+  .page-hero { padding: 9rem 1.5rem 3rem; }
+  .asporto-main { grid-template-columns: 1fr; }
+  .form-panel { padding: 2.5rem 1.5rem; border-right: none; border-bottom: 1px solid var(--border); }
+  .info-panel-aside { padding: 2.5rem 1.5rem; }
+}
+@media(max-width: 600px) {
+  .form-row { grid-template-columns: 1fr; }
+  .hero-orari { flex-direction: column; gap: .8rem; }
+  .toast { bottom: 1rem; right: 1rem; left: 1rem; max-width: none; }
 }
 </style>
 </head>
-
 <body>
 
-<nav>
+<!-- NAV -->
+<nav id="nav">
   <a href="index.html" class="nav-logo">Pizzeria <span>Marco</span></a>
   <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="pizzeria-marco-dove-siamo.html">Prenota</a></li>
-    <li><a href="pizzeria-marco-asporto.html" class="active">Asporto</a></li>
+    <li><a href="index.html#about">Storia</a></li>
+    <li><a href="pizzeria-marco-menu.html">Menu</a></li>
+    <li><a href="pizzeria-marco-dove-siamo.html">Dove siamo</a></li>
+    <li><a href="#" class="active">Asporto</a></li>
   </ul>
+  <a href="index.html" class="nav-cta">Home</a>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Apri menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
-<section class="form-section">
-  <div class="container">
-    <div class="form-box">
-
-      <div class="form-title">Ordina da asporto</div>
-
-      <form id="form">
-
-        <div class="field">
-          <label>Nome</label>
-          <input type="text" id="nome">
-          <div class="error" id="errNome"></div>
-        </div>
-
-        <div class="field">
-          <label>Telefono</label>
-          <input type="tel" id="telefono">
-          <div class="error" id="errTel"></div>
-        </div>
-
-        <div class="field">
-          <label>Orario ritiro</label>
-          <input type="time" id="ora">
-          <div class="error" id="errOra"></div>
-        </div>
-
-        <div class="field">
-          <label>Ordine</label>
-          <textarea id="ordine" placeholder="Es: 2 margherite, 1 diavola..."></textarea>
-          <div class="error" id="errOrdine"></div>
-        </div>
-
-        <div class="field">
-          <label>Note</label>
-          <textarea id="note"></textarea>
-        </div>
-
-        <button class="btn-primary">Invia ordine</button>
-
-      </form>
-
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="page-hero-inner">
+    <span class="eyebrow">Ritiro in negozio · Rovereto</span>
+    <h1 class="page-title">Ordina <em>asporto.</em></h1>
+    <p class="page-hero-sub">Componi il tuo ordine, scegli l'orario di ritiro e passa direttamente in cassa. Lo prepariamo noi, tu pensi solo a gustarlo.</p>
+    <div class="hero-orari">
+      <div class="orario-chip">Pranzo: <b>11:30 – 14:00</b></div>
+      <div class="orario-chip">Cena: <b>18:00 – 21:30</b></div>
+      <div class="orario-chip">Chiusi il <b>Lunedì</b></div>
     </div>
   </div>
 </section>
 
-<div class="toast" id="toast"></div>
+<!-- MAIN: FORM + INFO -->
+<div class="asporto-main">
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-<!-- CHIAVIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII -->
-<script>
-const SUPABASE_URL = 'https://urdfwujrekisuylowqjc.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVyZGZ3dWpyZWtpc3V5bG93cWpjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzMzQ0ODAsImV4cCI6MjA5MTkxMDQ4MH0.4jg_co4O8bkFMtx6y4jt7lPfQjFG6sgUMgZpDRdM3Xw';
+  <!-- FORM PANEL -->
+  <div class="form-panel">
+    <span class="form-panel-eyebrow">Nuovo ordine</span>
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    <!-- Success overlay (shown after submit) -->
+    <div class="success-overlay" id="successOverlay">
+      <div class="success-icon">🍕</div>
+      <h2 class="success-title">Ordine <em>ricevuto!</em></h2>
+      <p class="success-sub" id="successMsg">Il tuo ordine è stato inviato. Ti aspettiamo!</p>
+      <a href="#" class="success-back" id="successBack">Fai un altro ordine</a>
+    </div>
 
-const form = document.getElementById('form');
-const toast = document.getElementById('toast');
+    <!-- Form -->
+    <div id="formWrap">
+      <div class="submit-err" id="submitErr"></div>
 
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
+      <form id="asportoForm" novalidate>
 
-  let nome = nomeInput.value.trim();
-  let telefono = telefonoInput.value.trim();
-  let ora = oraInput.value;
-  let ordine = ordineInput.value.trim();
-  let note = noteInput.value.trim();
+        <div class="form-row">
+          <div class="form-group">
+            <label for="pNome">Nome e cognome *</label>
+            <input type="text" id="pNome" name="nome" required
+                   autocomplete="name" placeholder="Mario Rossi">
+            <div class="form-err" id="errNome"></div>
+          </div>
+          <div class="form-group">
+            <label for="pTelefono">Telefono *</label>
+            <input type="tel" id="pTelefono" name="telefono" required
+                   autocomplete="tel" placeholder="+39 340 000 0000">
+            <div class="form-err" id="errTelefono"></div>
+          </div>
+        </div>
 
-  let error = false;
+        <div class="form-group">
+          <label for="pOra">Orario di ritiro *</label>
+          <select id="pOra" name="ora" required>
+            <option value="">— scegli un orario —</option>
+            <optgroup label="🌞 Pranzo">
+              <option value="11:30">11:30</option>
+              <option value="12:00">12:00</option>
+              <option value="12:30">12:30</option>
+              <option value="13:00">13:00</option>
+              <option value="13:30">13:30</option>
+              <option value="14:00">14:00</option>
+            </optgroup>
+            <optgroup label="🌙 Cena">
+              <option value="18:00">18:00</option>
+              <option value="18:30">18:30</option>
+              <option value="19:00">19:00</option>
+              <option value="19:30">19:30</option>
+              <option value="20:00">20:00</option>
+              <option value="20:30">20:30</option>
+              <option value="21:00">21:00</option>
+              <option value="21:30">21:30</option>
+            </optgroup>
+          </select>
+          <div class="form-err" id="errOra"></div>
+        </div>
 
-  if (!nome) { errNome.textContent = "Inserisci nome"; error = true; }
-  if (!telefono) { errTel.textContent = "Inserisci telefono"; error = true; }
-  if (!ora) { errOra.textContent = "Inserisci orario"; error = true; }
-  if (!ordine) { errOrdine.textContent = "Inserisci ordine"; error = true; }
+        <div class="form-group">
+          <label for="pOrdine">Il tuo ordine *</label>
+          <textarea id="pOrdine" name="ordine" required
+            placeholder="Es: 1 Margherita normale (impasto integrale), 1 Diavola maxi, 2 Khorasan & Tartufo normali…"></textarea>
+          <div class="form-err" id="errOrdine"></div>
+        </div>
 
-  if (error) return;
+        <div class="form-group">
+          <label for="pNote">Note aggiuntive (opzionale)</label>
+          <textarea id="pNote" name="note"
+            placeholder="Allergie, variazioni, aggiustamenti particolari…"></textarea>
+        </div>
 
-  const { error: dbError } = await supabase.from('ordini_asporto').insert({
-    nome,
-    telefono,
-    ora,
-    ordine,
-    note: note || null,
-    stato: 'in_preparazione'
+        <button type="submit" class="btn-submit" id="btnSubmit">
+          <span class="spinner" id="spinner"></span>
+          Invia ordine
+        </button>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- INFO ASIDE -->
+  <div class="info-panel-aside">
+    <h2 class="info-title">Come <em>funziona</em></h2>
+    <p class="info-sub">
+      Compila il form con il tuo nome, numero di telefono, orario di ritiro e scrivi le pizze che vuoi.<br><br>
+      Passa a ritirare in <strong style="color:var(--cream)">Vicolo Paganini, Rovereto</strong> all'orario scelto — il tuo ordine sarà già pronto.
+    </p>
+
+    <div class="info-sep"></div>
+
+    <span class="info-label-sm">Alcune delle nostre pizze</span>
+    <div class="menu-highlights">
+      <div class="menu-hl-item">
+        <span class="menu-hl-name">Margherita</span>
+        <span class="menu-hl-price">da € 6,50</span>
+      </div>
+      <div class="menu-hl-item">
+        <span class="menu-hl-name">Diavola</span>
+        <span class="menu-hl-price">da € 8,00</span>
+      </div>
+      <div class="menu-hl-item">
+        <span class="menu-hl-name">Integrale Gourmet ✦</span>
+        <span class="menu-hl-price">da € 9,50</span>
+      </div>
+      <div class="menu-hl-item">
+        <span class="menu-hl-name">Khorasan & Tartufo ✦</span>
+        <span class="menu-hl-price">da € 11,00</span>
+      </div>
+      <div class="menu-hl-item">
+        <span class="menu-hl-name">Montanara</span>
+        <span class="menu-hl-price">da € 10,00</span>
+      </div>
+      <div class="menu-hl-item">
+        <span class="menu-hl-name">Speck & Gorgonzola</span>
+        <span class="menu-hl-price">da € 9,50</span>
+      </div>
+      <div class="menu-hl-item">
+        <span class="menu-hl-name">Quattro Stagioni</span>
+        <span class="menu-hl-price">da € 8,50</span>
+      </div>
+      <div class="menu-hl-item">
+        <span class="menu-hl-name">Verdure Grigliate 🌿</span>
+        <span class="menu-hl-price">da € 8,00</span>
+      </div>
+    </div>
+
+    <div class="info-sep"></div>
+
+    <span class="info-label-sm">Formati disponibili</span>
+    <p style="font-size:.9rem;color:var(--muted);line-height:1.8">
+      Mini <span style="color:var(--cream)">22 cm</span> &nbsp;·&nbsp;
+      Normale <span style="color:var(--cream)">30 cm</span> &nbsp;·&nbsp;
+      Maxi <span style="color:var(--cream)">40 cm</span><br>
+      Impasto: <span style="color:var(--cream)">Classica · Integrale · Khorasan</span>
+    </p>
+
+    <div class="info-sep"></div>
+
+    <span class="info-label-sm">Orari asporto</span>
+    <p style="font-size:.9rem;color:var(--muted);line-height:2">
+      Mar – Ven: <span style="color:var(--cream)">11:30–14:00 · 18:00–21:30</span><br>
+      Sabato: <span style="color:var(--cream)">11:30–14:00 · 18:00–21:30</span><br>
+      Domenica: <span style="color:var(--cream)">18:00–21:30</span><br>
+      Lunedì: <span style="color:var(--muted)">chiuso</span>
+    </p>
+
+    <div class="info-sep"></div>
+
+    <a href="pizzeria-marco-menu.html" class="btn-outline" style="display:inline-block;margin-top:.5rem">
+      Vedi il menu completo →
+    </a>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Pizzeria <em>Marco</em></div>
+  <ul class="footer-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="pizzeria-marco-menu.html">Menu</a></li>
+    <li><a href="pizzeria-marco-dove-siamo.html">Dove siamo</a></li>
+    <li><a href="pizzeria-marco-recensioni.html">Recensioni</a></li>
+  </ul>
+  <div class="footer-copy">© 2025 Pizzeria Marco · Vicolo Paganini, Rovereto (TN)</div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- ════════════════════════════════════════════════════════════
+     SUPABASE INTEGRATION
+     ════════════════════════════════════════════════════════════ -->
+<script type="module">
+
+// ─── 1. CONFIGURAZIONE SUPABASE ──────────────────────────────
+// ← Sostituisci questi valori con i tuoi dati dal pannello Supabase
+//    (Supabase Dashboard → Project Settings → API)
+const SUPABASE_URL      = 'https://YOUR_PROJECT.supabase.co';  // ← Project URL
+const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY';                     // ← anon/public key
+
+// ─── 2. SUPABASE SCHEMA (esegui questo SQL in Supabase → SQL Editor) ─
+/*
+  -- Tabella ordini asporto
+  CREATE TABLE ordini_asporto (
+    id          uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    created_at  timestamptz DEFAULT now(),
+    nome        text NOT NULL,
+    telefono    text NOT NULL,
+    ora         text NOT NULL,
+    ordine      text NOT NULL,   -- testo libero con le pizze richieste
+    note        text,
+    stato       text DEFAULT 'in_attesa'
+                CHECK (stato IN ('in_attesa', 'in_preparazione', 'pronto', 'ritirato', 'cancellato'))
+  );
+
+  -- RLS: chiunque può inserire, solo autenticati possono leggere/modificare
+  ALTER TABLE ordini_asporto ENABLE ROW LEVEL SECURITY;
+  CREATE POLICY "insert_public" ON ordini_asporto
+    FOR INSERT TO anon WITH CHECK (true);
+  CREATE POLICY "all_authenticated" ON ordini_asporto
+    FOR ALL TO authenticated USING (true);
+*/
+
+// ─── 3. IMPORT SUPABASE CLIENT ───────────────────────────────
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ─── HELPERS ─────────────────────────────────────────────────
+const $  = id => document.getElementById(id);
+const form = $('asportoForm');
+
+// ─── FILTRA ORE PASSATE SE OGGI ──────────────────────────────
+// (Asporto non ha date: filtra in base all'ora corrente del giorno)
+function filterOrePassate() {
+  const select  = $('pOra');
+  const now     = new Date();
+  const nowMins = now.getHours() * 60 + now.getMinutes() + 30; // buffer 30 min
+
+  select.querySelectorAll('option[value]').forEach(opt => {
+    if (!opt.value) return;
+    const [hh, mm] = opt.value.split(':').map(Number);
+    const slotMins = hh * 60 + mm;
+    opt.disabled   = slotMins < nowMins;
+    opt.style.color = slotMins < nowMins ? 'var(--muted)' : '';
   });
+}
+filterOrePassate();
 
-  if (dbError) {
-    toast.textContent = "Errore durante l'invio. Riprova.";
-  } else {
-    toast.textContent = "Ordine inviato! 🍕";
-    form.reset();
+// ─── VALIDAZIONE ─────────────────────────────────────────────
+function validate() {
+  let ok = true;
+  const checks = [
+    { id: 'pNome',     err: 'errNome',     msg: 'Inserisci il tuo nome.' },
+    { id: 'pTelefono', err: 'errTelefono', msg: 'Inserisci un numero di telefono.' },
+    { id: 'pOra',      err: 'errOra',      msg: 'Scegli un orario di ritiro.' },
+    { id: 'pOrdine',   err: 'errOrdine',   msg: 'Scrivi le pizze che vuoi ordinare.' },
+  ];
+  checks.forEach(({ id, err, msg }) => {
+    const el = $(id), errEl = $(err);
+    if (!el.value.trim()) { errEl.textContent = msg; ok = false; }
+    else errEl.textContent = '';
+  });
+  return ok;
+}
+
+// ─── SUBMIT ──────────────────────────────────────────────────
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  $('submitErr').classList.remove('show');
+  if (!validate()) return;
+
+  const btn = $('btnSubmit');
+  btn.disabled = true;
+  btn.classList.add('loading');
+
+  const payload = {
+    nome:     $('pNome').value.trim(),
+    telefono: $('pTelefono').value.trim(),
+    ora:      $('pOra').value,
+    ordine:   $('pOrdine').value.trim(),
+    note:     $('pNote').value.trim() || null,
+    stato:    'in_attesa',
+    // ← 4. CAMPO DATA (opzionale): se vuoi salvare anche la data odierna:
+    // data: new Date().toISOString().split('T')[0],
+  };
+
+  // ← 5. INSERIMENTO IN SUPABASE
+  const { error } = await supabase
+    .from('ordini_asporto')   // ← nome tabella (deve corrispondere allo schema sopra)
+    .insert([payload]);
+
+  btn.disabled = false;
+  btn.classList.remove('loading');
+
+  if (error) {
+    // ← 6. GESTIONE ERRORE: mostra messaggio inline
+    console.error('Supabase error:', error);
+    const errEl = $('submitErr');
+    errEl.textContent = 'Si è verificato un errore nell\'invio. Riprova o chiamaci direttamente.';
+    errEl.classList.add('show');
+    return;
   }
 
-  toast.style.display = 'block';
-  setTimeout(() => toast.style.display = 'none', 3000);
-});
-</script>
+  // ─── SUCCESSO ────────────────────────────────────────────
+  const nome = $('pNome').value.trim();
+  const ora  = $('pOra').value;
+  form.reset();
 
+  // Mostra overlay successo
+  $('formWrap').style.display = 'none';
+  const overlay = $('successOverlay');
+  overlay.classList.add('show');
+  $('successMsg').textContent =
+    `Grazie ${nome}! Il tuo ordine è in coda — sarà pronto per le ${ora}. Ti aspettiamo in Vicolo Paganini.`;
+
+  // ← 7. EVENTUALE SMS/NOTIFICA: qui puoi aggiungere una chiamata
+  //    a Twilio o a una Supabase Edge Function per notificare la cucina.
+  //    Esempio Edge Function: await supabase.functions.invoke('notify-kitchen', { body: payload });
+});
+
+// ─── RESET FORM (pulsante "Fai un altro ordine") ─────────────
+$('successBack').addEventListener('click', e => {
+  e.preventDefault();
+  $('successOverlay').classList.remove('show');
+  $('formWrap').style.display = '';
+  filterOrePassate();
+});
+
+// ─── NAV ─────────────────────────────────────────────────────
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+document.getElementById('navHamburger').addEventListener('click', function() {
+  const open = nav.classList.toggle('nav-open');
+  this.setAttribute('aria-expanded', open);
+});
+document.addEventListener('click', e => {
+  if (!nav.contains(e.target)) nav.classList.remove('nav-open');
+});
+
+</script>
 </body>
 </html>
