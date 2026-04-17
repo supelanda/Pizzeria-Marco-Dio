@@ -153,6 +153,7 @@ create index idx_prenotazioni_data on prenotazioni(data);
       <button class="asporto-filter" data-filter="in_preparazione">🟠 In preparazione</button>
       <button class="asporto-filter" data-filter="pronto">🟢 Pronto</button>
       <button class="asporto-filter" data-filter="ritirato">✓ Ritirato</button>
+      <button id="btnRefreshOrdini" style="margin-left:auto;font-family:'Cormorant Garamond',serif;font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;background:transparent;color:var(--muted);border:1px solid var(--border);padding:.45rem 1rem;cursor:pointer;transition:border-color .2s,color .2s" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold-lt)'" onmouseout="this.style.borderColor='';this.style.color=''">↻ Aggiorna</button>
     </div>
 
     <!-- Orders list -->
@@ -274,6 +275,7 @@ function showAuthErr(el, msg) {
 }
 
 $('btnLogout').addEventListener('click', async () => {
+  if (realtimeChannel) supabase.removeChannel(realtimeChannel);
   await supabase.auth.signOut();
   location.reload();
 });
@@ -323,22 +325,34 @@ window.switchTab = function(tab) {
 // ════════════════════════════════════════════════════════════════
 let allOrdini = [];
 let ordineFilter = 'all';
+let realtimeChannel = null;
 
 async function loadOrdiniOggi() {
-  const today = toYMD(new Date());
   $('asportoList').innerHTML = '<div class="loading-state"><span class="mini-spinner"></span>Caricamento ordini…</div>';
 
-  // ← Legge dalla tabella ordini_asporto — solo ordini di oggi
+  // ── FIX TIMEZONE ──────────────────────────────────────────────
+  // created_at in Supabase è timestamptz (UTC).
+  // Usando Date + setHours(0/23) otteniamo la mezzanotte/fine giornata
+  // in ora LOCALE, poi toISOString() converte in UTC correttamente.
+  // Esempio Italia UTC+2: mezzanotte locale = 22:00 UTC del giorno prima.
+  const start = new Date(); start.setHours(0, 0, 0, 0);
+  const end   = new Date(); end.setHours(23, 59, 59, 999);
+
   const { data, error } = await supabase
     .from('ordini_asporto')
     .select('*')
-    .gte('created_at', today + 'T00:00:00')
-    .lte('created_at', today + 'T23:59:59')
-    .order('ora', { ascending: true })
-    .order('created_at', { ascending: true });
+    .gte('created_at', start.toISOString())   // ← ISO con timezone (UTC)
+    .lte('created_at', end.toISOString())     // ← ISO con timezone (UTC)
+    .order('ora',         { ascending: true })
+    .order('created_at',  { ascending: true });
 
   if (error) {
-    $('asportoList').innerHTML = `<div class="loading-state" style="color:var(--red-lt)">Errore: ${error.message}</div>`;
+    console.error('[asporto] Errore query Supabase:', error);
+    $('asportoList').innerHTML =
+      `<div class="loading-state" style="color:var(--red-lt)">
+         Errore: ${error.message}<br>
+         <small style="opacity:.6">(controlla console per dettagli)</small>
+       </div>`;
     return;
   }
 
@@ -346,6 +360,41 @@ async function loadOrdiniOggi() {
   updateOrdiniStats();
   renderOrdini();
   attachFilterListeners();
+
+  // ── REALTIME: ricevi nuovi ordini senza refresh ───────────────
+  // Cancella eventuale canale precedente
+  if (realtimeChannel) supabase.removeChannel(realtimeChannel);
+
+  realtimeChannel = supabase
+    .channel('ordini-live')
+    .on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: 'ordini_asporto' },
+      (payload) => {
+        const { eventType, new: newRow, old: oldRow } = payload;
+
+        if (eventType === 'INSERT') {
+          // Controlla che l'ordine sia di oggi (in ora locale)
+          const created = new Date(newRow.created_at);
+          const now     = new Date();
+          const isToday = created.toLocaleDateString() === now.toLocaleDateString();
+          if (isToday) {
+            allOrdini.push(newRow);
+            allOrdini.sort((a, b) => a.ora.localeCompare(b.ora));
+            updateOrdiniStats();
+            renderOrdini();
+            showToast(`📦 Nuovo ordine da ${newRow.nome} per le ${newRow.ora}`, 'green');
+          }
+        } else if (eventType === 'UPDATE') {
+          const idx = allOrdini.findIndex(o => o.id === newRow.id);
+          if (idx !== -1) { allOrdini[idx] = newRow; updateOrdiniStats(); renderOrdini(); }
+        } else if (eventType === 'DELETE') {
+          allOrdini = allOrdini.filter(o => o.id !== oldRow.id);
+          updateOrdiniStats(); renderOrdini();
+        }
+      }
+    )
+    .subscribe();
 }
 
 function updateOrdiniStats() {
@@ -365,6 +414,9 @@ function attachFilterListeners() {
       renderOrdini();
     };
   });
+  // Bottone aggiorna manuale
+  const refresh = document.getElementById('btnRefreshOrdini');
+  if (refresh) refresh.onclick = () => loadOrdiniOggi();
 }
 
 function renderOrdini() {
