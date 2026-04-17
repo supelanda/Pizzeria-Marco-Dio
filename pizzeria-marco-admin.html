@@ -153,7 +153,6 @@ create index idx_prenotazioni_data on prenotazioni(data);
       <button class="asporto-filter" data-filter="in_preparazione">🟠 In preparazione</button>
       <button class="asporto-filter" data-filter="pronto">🟢 Pronto</button>
       <button class="asporto-filter" data-filter="ritirato">✓ Ritirato</button>
-      <button id="btnRefreshOrdini" style="margin-left:auto;font-family:'Cormorant Garamond',serif;font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;background:transparent;color:var(--muted);border:1px solid var(--border);padding:.45rem 1rem;cursor:pointer;transition:border-color .2s,color .2s" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold-lt)'" onmouseout="this.style.borderColor='';this.style.color=''">↻ Aggiorna</button>
     </div>
 
     <!-- Orders list -->
@@ -275,7 +274,6 @@ function showAuthErr(el, msg) {
 }
 
 $('btnLogout').addEventListener('click', async () => {
-  if (realtimeChannel) supabase.removeChannel(realtimeChannel);
   await supabase.auth.signOut();
   location.reload();
 });
@@ -325,34 +323,22 @@ window.switchTab = function(tab) {
 // ════════════════════════════════════════════════════════════════
 let allOrdini = [];
 let ordineFilter = 'all';
-let realtimeChannel = null;
 
 async function loadOrdiniOggi() {
   $('asportoList').innerHTML = '<div class="loading-state"><span class="mini-spinner"></span>Caricamento ordini…</div>';
 
-  // ── FIX TIMEZONE ──────────────────────────────────────────────
-  // created_at in Supabase è timestamptz (UTC).
-  // Usando Date + setHours(0/23) otteniamo la mezzanotte/fine giornata
-  // in ora LOCALE, poi toISOString() converte in UTC correttamente.
-  // Esempio Italia UTC+2: mezzanotte locale = 22:00 UTC del giorno prima.
-  const start = new Date(); start.setHours(0, 0, 0, 0);
-  const end   = new Date(); end.setHours(23, 59, 59, 999);
-
+  // Carica tutti gli ordini dalla tabella, ordinati per ora di ritiro.
+  // I filtri per stato sono applicati lato client nel renderOrdini().
+  // NOTA: la tabella non ha una colonna created_at: mostra tutti gli ordini.
   const { data, error } = await supabase
     .from('ordini_asporto')
     .select('*')
-    .gte('created_at', start.toISOString())   // ← ISO con timezone (UTC)
-    .lte('created_at', end.toISOString())     // ← ISO con timezone (UTC)
-    .order('ora',         { ascending: true })
-    .order('created_at',  { ascending: true });
+    .order('ora', { ascending: true });
 
   if (error) {
-    console.error('[asporto] Errore query Supabase:', error);
+    console.error('[asporto] Errore Supabase:', error);
     $('asportoList').innerHTML =
-      `<div class="loading-state" style="color:var(--red-lt)">
-         Errore: ${error.message}<br>
-         <small style="opacity:.6">(controlla console per dettagli)</small>
-       </div>`;
+      `<div class="loading-state" style="color:var(--red-lt)">Errore: ${error.message}<br><small style="opacity:.6">Controlla la console del browser.</small></div>`;
     return;
   }
 
@@ -360,41 +346,6 @@ async function loadOrdiniOggi() {
   updateOrdiniStats();
   renderOrdini();
   attachFilterListeners();
-
-  // ── REALTIME: ricevi nuovi ordini senza refresh ───────────────
-  // Cancella eventuale canale precedente
-  if (realtimeChannel) supabase.removeChannel(realtimeChannel);
-
-  realtimeChannel = supabase
-    .channel('ordini-live')
-    .on(
-      'postgres_changes',
-      { event: '*', schema: 'public', table: 'ordini_asporto' },
-      (payload) => {
-        const { eventType, new: newRow, old: oldRow } = payload;
-
-        if (eventType === 'INSERT') {
-          // Controlla che l'ordine sia di oggi (in ora locale)
-          const created = new Date(newRow.created_at);
-          const now     = new Date();
-          const isToday = created.toLocaleDateString() === now.toLocaleDateString();
-          if (isToday) {
-            allOrdini.push(newRow);
-            allOrdini.sort((a, b) => a.ora.localeCompare(b.ora));
-            updateOrdiniStats();
-            renderOrdini();
-            showToast(`📦 Nuovo ordine da ${newRow.nome} per le ${newRow.ora}`, 'green');
-          }
-        } else if (eventType === 'UPDATE') {
-          const idx = allOrdini.findIndex(o => o.id === newRow.id);
-          if (idx !== -1) { allOrdini[idx] = newRow; updateOrdiniStats(); renderOrdini(); }
-        } else if (eventType === 'DELETE') {
-          allOrdini = allOrdini.filter(o => o.id !== oldRow.id);
-          updateOrdiniStats(); renderOrdini();
-        }
-      }
-    )
-    .subscribe();
 }
 
 function updateOrdiniStats() {
@@ -414,9 +365,6 @@ function attachFilterListeners() {
       renderOrdini();
     };
   });
-  // Bottone aggiorna manuale
-  const refresh = document.getElementById('btnRefreshOrdini');
-  if (refresh) refresh.onclick = () => loadOrdiniOggi();
 }
 
 function renderOrdini() {
@@ -456,7 +404,7 @@ function renderOrdineCard(o) {
     .map(s => `<button class="btn-stato" data-id="${o.id}" data-stato="${s.val}">${s.label}</button>`)
     .join('');
 
-  const createdFmt = new Date(o.created_at).toLocaleTimeString('it-IT', { hour:'2-digit', minute:'2-digit' });
+  // created_at non presente — riga ricevuta mostrata senza orario di ricezione
 
   return `
 <div class="ordine-card ${o.stato}" data-id="${o.id}">
@@ -472,7 +420,7 @@ function renderOrdineCard(o) {
     ${statoBtns}
     <button class="btn-stato btn-cancella-ord" data-id="${o.id}" data-stato="cancellato"
       ${o.stato === 'cancellato' ? 'disabled' : ''}>✕ Cancella</button>
-    <span class="ordine-created">ricevuto ${createdFmt}</span>
+
   </div>
 </div>`;
 }
