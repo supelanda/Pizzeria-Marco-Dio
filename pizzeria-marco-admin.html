@@ -71,11 +71,26 @@
 
   <!-- STATS BAR -->
   <div class="statsbar">
-    <div class="stat-chip">Oggi: <b id="todayCount">—</b> prenotazioni</div>
+    <div class="stat-chip" id="statPrenotazioni">Prenotazioni oggi: <b id="todayCount">—</b></div>
     <div class="stat-chip">Persone oggi: <b id="todayPersone">—</b></div>
-    <div class="stat-chip">Settimana: <b id="weekCount">—</b> prenotazioni</div>
+    <div class="stat-chip">Settimana: <b id="weekCount">—</b></div>
+    <div class="stat-chip" id="statAsporto" style="display:none">Asporto oggi: <b id="todayOrdini">—</b></div>
+    <div class="stat-chip" id="statAsportoIn" style="display:none">In attesa: <b id="ordiniInAttesa">—</b></div>
   </div>
 
+  <!-- ADMIN TABS -->
+  <div class="admin-tabs">
+    <button class="admin-tab active" id="tabPrenotazioni" onclick="switchTab('prenotazioni')">
+      📅 Prenotazioni tavoli <span class="tab-badge" id="badgePrenotazioni">0</span>
+    </button>
+    <button class="admin-tab" id="tabAsporto" onclick="switchTab('asporto')">
+      📦 Ordini asporto <span class="tab-badge" id="badgeAsporto">0</span>
+    </button>
+  </div>
+
+
+  <!-- ═════════ TAB: PRENOTAZIONI ═════════ -->
+  <div class="tab-panel active" id="panelPrenotazioni">
   <!-- WEEK NAV -->
   <div class="week-nav">
     <button class="btn-week" id="btnPrevWeek">← Settimana precedente</button>
@@ -125,6 +140,27 @@ create index idx_prenotazioni_data on prenotazioni(data);
       Trovala in Supabase → Project Settings → API → service_role.</p>
     </div>
   </details>
+  </div><!-- /panelPrenotazioni -->
+
+  <!-- ═════════ TAB: ORDINI ASPORTO ═════════ -->
+  <div class="tab-panel" id="panelAsporto">
+
+    <!-- Filter bar -->
+    <div class="asporto-controls">
+      <span style="font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)">Stato:</span>
+      <button class="asporto-filter active" data-filter="all">Tutti</button>
+      <button class="asporto-filter" data-filter="in_attesa">🟡 In attesa</button>
+      <button class="asporto-filter" data-filter="in_preparazione">🟠 In preparazione</button>
+      <button class="asporto-filter" data-filter="pronto">🟢 Pronto</button>
+      <button class="asporto-filter" data-filter="ritirato">✓ Ritirato</button>
+    </div>
+
+    <!-- Orders list -->
+    <div class="asporto-list" id="asportoList">
+      <div class="loading-state"><span class="mini-spinner"></span>Caricamento ordini…</div>
+    </div>
+
+  </div>
 
 </div>
 
@@ -253,6 +289,171 @@ function showApp() {
   $('authScreen').classList.add('hidden');
   $('appScreen').classList.add('show');
   loadWeek();
+  loadOrdiniOggi();
+}
+
+// ════════════════════════════════════════════════════════════════
+//  TAB SWITCHING
+// ════════════════════════════════════════════════════════════════
+let currentTab = 'prenotazioni';
+
+window.switchTab = function(tab) {
+  currentTab = tab;
+  // Panels
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(tab === 'prenotazioni' ? 'panelPrenotazioni' : 'panelAsporto')
+    .classList.add('active');
+  // Tabs
+  document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(tab === 'prenotazioni' ? 'tabPrenotazioni' : 'tabAsporto')
+    .classList.add('active');
+  // Stats bar chips
+  $('statPrenotazioni').style.display = tab === 'prenotazioni' ? '' : 'none';
+  $('statAsporto').style.display      = tab === 'asporto' ? '' : 'none';
+  $('statAsportoIn').style.display    = tab === 'asporto' ? '' : 'none';
+  // Search placeholder
+  $('searchInput').placeholder = tab === 'prenotazioni'
+    ? 'Cerca nome o telefono…'
+    : 'Cerca ordine per nome o telefono…';
+  if (tab === 'asporto') loadOrdiniOggi();
+};
+
+// ════════════════════════════════════════════════════════════════
+//  ORDINI ASPORTO
+// ════════════════════════════════════════════════════════════════
+let allOrdini = [];
+let ordineFilter = 'all';
+
+async function loadOrdiniOggi() {
+  const today = toYMD(new Date());
+  $('asportoList').innerHTML = '<div class="loading-state"><span class="mini-spinner"></span>Caricamento ordini…</div>';
+
+  // ← Legge dalla tabella ordini_asporto — solo ordini di oggi
+  const { data, error } = await supabase
+    .from('ordini_asporto')
+    .select('*')
+    .gte('created_at', today + 'T00:00:00')
+    .lte('created_at', today + 'T23:59:59')
+    .order('ora', { ascending: true })
+    .order('created_at', { ascending: true });
+
+  if (error) {
+    $('asportoList').innerHTML = `<div class="loading-state" style="color:var(--red-lt)">Errore: ${error.message}</div>`;
+    return;
+  }
+
+  allOrdini = data || [];
+  updateOrdiniStats();
+  renderOrdini();
+  attachFilterListeners();
+}
+
+function updateOrdiniStats() {
+  const attesa = allOrdini.filter(o => o.stato === 'in_attesa').length;
+  $('todayOrdini').textContent   = allOrdini.length;
+  $('ordiniInAttesa').textContent = attesa;
+  $('badgeAsporto').textContent  = allOrdini.filter(o => !['ritirato','cancellato'].includes(o.stato)).length;
+  $('badgePrenotazioni').textContent = allBookings.filter(b => b.stato !== 'cancellata').length;
+}
+
+function attachFilterListeners() {
+  document.querySelectorAll('.asporto-filter').forEach(btn => {
+    btn.onclick = () => {
+      ordineFilter = btn.dataset.filter;
+      document.querySelectorAll('.asporto-filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderOrdini();
+    };
+  });
+}
+
+function renderOrdini() {
+  const list = $('asportoList');
+  const q    = $('searchInput').value.toLowerCase().trim();
+  const filtered = allOrdini.filter(o => {
+    const matchFilter = ordineFilter === 'all' || o.stato === ordineFilter;
+    const matchSearch = !q || o.nome.toLowerCase().includes(q) || o.telefono.includes(q);
+    return matchFilter && matchSearch;
+  });
+
+  if (!filtered.length) {
+    list.innerHTML = '<div class="asporto-empty">Nessun ordine trovato.</div>';
+    return;
+  }
+
+  list.innerHTML = filtered.map(o => renderOrdineCard(o)).join('');
+  attachOrdineActions();
+}
+
+function renderOrdineCard(o) {
+  const q = $('searchInput').value.toLowerCase().trim();
+  const nome = q ? highlight(esc(o.nome), q) : esc(o.nome);
+  const tel  = q ? highlight(esc(o.telefono), q) : esc(o.telefono);
+  const noteHtml = o.note
+    ? `<div class="ordine-note">📝 ${esc(o.note)}</div>` : '';
+
+  const stati = [
+    { val: 'in_attesa',       label: '🟡 In attesa' },
+    { val: 'in_preparazione', label: '🟠 In preparazione' },
+    { val: 'pronto',          label: '🟢 Pronto' },
+    { val: 'ritirato',        label: '✓ Ritirato' },
+  ];
+
+  const statoBtns = stati
+    .filter(s => s.val !== o.stato)
+    .map(s => `<button class="btn-stato" data-id="${o.id}" data-stato="${s.val}">${s.label}</button>`)
+    .join('');
+
+  const createdFmt = new Date(o.created_at).toLocaleTimeString('it-IT', { hour:'2-digit', minute:'2-digit' });
+
+  return `
+<div class="ordine-card ${o.stato}" data-id="${o.id}">
+  <div class="ordine-top">
+    <div class="ordine-ora">${esc(o.ora)}</div>
+    <div class="ordine-name">${nome}</div>
+  </div>
+  <a href="tel:${esc(o.telefono)}" class="ordine-tel">📞 ${tel}</a>
+  <div class="ordine-testo">${esc(o.ordine)}</div>
+  ${noteHtml}
+  <div class="ordine-footer">
+    <span class="badge-ordine ${o.stato}">${getBadgeLabel(o.stato)}</span>
+    ${statoBtns}
+    <button class="btn-stato btn-cancella-ord" data-id="${o.id}" data-stato="cancellato"
+      ${o.stato === 'cancellato' ? 'disabled' : ''}>✕ Cancella</button>
+    <span class="ordine-created">ricevuto ${createdFmt}</span>
+  </div>
+</div>`;
+}
+
+function getBadgeLabel(stato) {
+  const map = {
+    in_attesa: '🟡 In attesa', in_preparazione: '🟠 In preparazione',
+    pronto: '🟢 Pronto', ritirato: '✓ Ritirato', cancellato: '✕ Cancellato',
+  };
+  return map[stato] || stato;
+}
+
+function attachOrdineActions() {
+  document.querySelectorAll('.btn-stato[data-id][data-stato]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const { id, stato } = btn.dataset;
+      if (btn.disabled) return;
+      btn.disabled = true; btn.textContent = '…';
+
+      const { error } = await supabase
+        .from('ordini_asporto')
+        .update({ stato })
+        .eq('id', id);
+
+      if (error) { showToast('Errore aggiornamento ordine.', 'red'); btn.disabled = false; return; }
+
+      const o = allOrdini.find(x => x.id === id);
+      if (o) o.stato = stato;
+      updateOrdiniStats();
+      renderOrdini();
+      showToast(`Ordine aggiornato: ${getBadgeLabel(stato)}`, 'green');
+    });
+  });
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -502,8 +703,12 @@ async function sendSMSTwilio(tel, nome, data, ora) {
 // ════════════════════════════════════════════════════════════════
 $('searchInput').addEventListener('input', function() {
   searchQuery = this.value.toLowerCase().trim();
-  const { monday } = getWeekBounds(weekOffset);
-  renderWeek(monday);
+  if (currentTab === 'prenotazioni') {
+    const { monday } = getWeekBounds(weekOffset);
+    renderWeek(monday);
+  } else {
+    renderOrdini();
+  }
 });
 
 function filterBookings(bookings) {
