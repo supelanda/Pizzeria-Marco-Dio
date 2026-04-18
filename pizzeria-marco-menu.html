@@ -723,7 +723,7 @@ nav.nav-open .nav-hamburger span:nth-child(3) {
   .dough-tag.avail { color:var(--gold); border-color:rgba(201,151,58,.3); }
   .dough-tag.lit   { background:var(--gold); color:var(--ink); border-color:var(--gold); }
 
-  .card-
+  .card-footer { border-top:1px solid var(--border-s); margin-top:1.3rem; padding-top:1rem; display:flex; gap:0; }
   .size-col { display:flex; flex-direction:column; align-items:center; flex:1; padding:.4rem .4rem; border-right:1px solid var(--border-s); transition:background .2s; }
   .size-col:last-child { border-right:none; }
   .size-col:hover { background:rgba(201,151,58,.04); }
@@ -755,7 +755,7 @@ nav.nav-open .nav-hamburger span:nth-child(3) {
   
   
 
-   to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
   @keyframes cardIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 
   @media(max-width:900px){
