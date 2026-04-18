@@ -603,6 +603,21 @@ nav.nav-open .nav-hamburger span:nth-child(3) {
 
 
 /* ── page-specific ────────────────────────────────── */
+/* ── MENU: page-hero 2-col grid ── */
+.page-hero {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:4rem;
+  align-items:end;
+  padding:11rem 4rem 5rem;
+}
+@media(max-width:900px) {
+  .page-hero { grid-template-columns:1fr; gap:2rem; padding:9rem 1.5rem 3rem; }
+}
+@media(max-width:600px) {
+  .page-hero { display:block; padding:8rem 1.2rem 2.5rem; }
+}
+
 
 /* PAGE HERO */
   
@@ -676,7 +691,7 @@ nav.nav-open .nav-hamburger span:nth-child(3) {
     background:var(--panel); position:relative; overflow:hidden;
     display:flex; flex-direction:column;
     transition:background .25s;
-    opacity:0; animation:cardIn .45s ease forwards;
+    animation:cardIn .45s ease both;
   }
   .pizza-card:hover { background:#211709; }
   .pizza-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; opacity:0; transition:opacity .25s; }
@@ -741,8 +756,7 @@ nav.nav-open .nav-hamburger span:nth-child(3) {
   
 
    to{opacity:1;transform:translateY(0)} }
-  @keyframes cardIn { to{opacity:1;transform:translateY(0)} }
-  .pizza-card { opacity:0; transform:translateY(10px); }
+  @keyframes cardIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 
   @media(max-width:900px){
     
@@ -1528,7 +1542,5 @@ nav.nav-open .nav-hamburger span:nth-child(3) {
 </body>
 </html>
 </script>
-</body>
-</html>
 </body>
 </html>
