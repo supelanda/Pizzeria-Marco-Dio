@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /pizzeria-marco-admin.html
+
+Sitemap: https://www.pizzeriamarco.it/sitemap.xml
